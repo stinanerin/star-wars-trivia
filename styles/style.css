@@ -11,9 +11,6 @@
   * {
     outline: 1px solid pink;
   }
-  * .row {
-    background-color: purple;
-  }
   body, h1, h2, h3, h4, p {
     margin: 0;
     color: #000;
@@ -22,6 +19,9 @@
     font-family: jedi, serif;
     line-height: 1;
     font-weight: 900;
-    margin-bottom: 1em;
+  }
+  button {
+    font-family: jedi, serif;
+    padding: 8px 16px;
   }
 }/*# sourceMappingURL=style.css.map */

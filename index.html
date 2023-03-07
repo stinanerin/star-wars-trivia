@@ -9,46 +9,51 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    <header>
+    <header class="text-center">
 
-        <h1 class="text-center">Star Wars Trivia</h1>
+        <h1 class="mb-5">Star Wars Trivia</h1>
+        <h2 class="mb-5">Compare Characters</h2>
         
     </header>
 
     <main>
+        <form id="characterForm">
+            <section class="container">
+            
+                <div class="row">
+                        <!-- Dropdown character.1 -->
+                        <select  class="form-select form-select-lg  col" id="charOne">
+                            <option selected data-img="">Choose character</option>
+                            <option data-img="">Luke Skywalker</option>
+                            <option data-img="/images/C-3PO.svg">C-3PO</option>
+                            <option data-img="/images/R2-D2.svg">R2-D2</option>
+                            <option data-img="/images/darth-vader.svg">Darth Vader</option>
+                            <option data-img="/images/leia.svg">Leia Organa</option>
+                            <option data-img="">Owen Lars</option>
+                            <option data-img="">Beru Whitesun lars</option>
+                            <option data-img="">R5-D4</option>
+                            <option data-img="">Biggs Darklighter</option>
+                            <option data-img="">Obi-Wan Kenobi</option>
+                        </select>
+                        <!-- Dropdown character.2 -->
+                        <select  class="form-select form-select-lg  col" id="charTwo">
+                            <option selected data-img="">Choose character</option>
+                            <option data-img="">Luke Skywalker</option>
+                            <option data-img="/images/C-3PO.svg">C-3PO</option>
+                            <option data-img="/images/R2-D2.svg">R2-D2</option>
+                            <option data-img="/images/darth-vader.svg">Darth Vader</option>
+                            <option data-img="/images/leia.svg">Leia Organa</option>
+                            <option data-img="">Owen Lars</option>
+                            <option data-img="">Beru Whitesun lars</option>
+                            <option data-img="">R5-D4</option>
+                            <option data-img="">Biggs Darklighter</option>
+                            <option data-img="">Obi-Wan Kenobi</option>
+                        </select>
+                        <button type="submit">Compare</button>
+                </div>
+            </section>
+        </form>
 
-        <section class="container">
-            <div class="row">
-                    <!-- Dropdown character.1 -->
-                    <select  class="form-select form-select-lg  col" id="charOne">
-                        <option selected data-img="">Choose character</option>
-                        <option data-img="">Luke Skywalker</option>
-                        <option data-img="/images/C-3PO.svg">C-3PO</option>
-                        <option data-img="/images/R2-D2.svg">R2-D2</option>
-                        <option data-img="/images/darth-vader.svg">Darth Vader</option>
-                        <option data-img="/images/leia.svg">Leia Organa</option>
-                        <option data-img="">Owen Lars</option>
-                        <option data-img="">Beru Whitesun lars</option>
-                        <option data-img="">R5-D4</option>
-                        <option data-img="">Biggs Darklighter</option>
-                        <option data-img="">Obi-Wan Kenobi</option>
-                    </select>
-                    <!-- Dropdown character.2 -->
-                    <select  class="form-select form-select-lg  col" id="charTwo">
-                        <option selected data-img="">Choose character</option>
-                        <option data-img="">Luke Skywalker</option>
-                        <option data-img="/images/C-3PO.svg">C-3PO</option>
-                        <option data-img="/images/R2-D2.svg">R2-D2</option>
-                        <option data-img="/images/darth-vader.svg">Darth Vader</option>
-                        <option data-img="/images/leia.svg">Leia Organa</option>
-                        <option data-img="">Owen Lars</option>
-                        <option data-img="">Beru Whitesun lars</option>
-                        <option data-img="">R5-D4</option>
-                        <option data-img="">Biggs Darklighter</option>
-                        <option data-img="">Obi-Wan Kenobi</option>
-                    </select>
-            </div>
-        </section>
     </main>
 
     

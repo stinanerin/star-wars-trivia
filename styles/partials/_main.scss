@@ -1,8 +1,6 @@
 * {
     outline: 1px solid pink;
-    .row {
-        background-color: purple;
-    }
+    
 }
 
 body, h1, h2, h3, h4, p {
@@ -14,5 +12,9 @@ h1, h2, h3, h4 {
     font-family: $heading-primary ;
     line-height: 1;
     font-weight: 900;
-    margin-bottom: 1em;
+}
+
+button {
+    font-family: $heading-primary;
+    padding: 8px 16px;
 }

@@ -37,3 +37,13 @@ class Character {
         this.pictureUrl = pictureUrl;
     }
 }
+
+// -------------------------------------------------------- Form Event Listener -----------------------------------------------------------
+
+document.querySelector("#characterForm").addEventListener("submit", (e) => {
+    e.preventDefault()
+
+
+    console.log("submit", e.target)
+})
+
