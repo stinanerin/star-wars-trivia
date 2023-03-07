@@ -21,3 +21,19 @@ getData().then((data) => {
     // });
   
 })
+
+// -------------------------------------------------------- Character Prototype -----------------------------------------------------------
+
+class Character {
+    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, pictureUrl) {
+        this.name = name;
+        this.gender = gender;
+        this.height = height;
+        this.mass = mass;
+        this.hairColor = hairColor;
+        this.skinColor = skinColor;
+        this.eyeColor = eyeColor;
+        this.movies = movies;
+        this.pictureUrl = pictureUrl;
+    }
+}
