@@ -5,6 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Star Wars Trivia</title>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="/styles/style.css">
     <script src="index.js" defer></script>
 </head>
@@ -17,12 +24,12 @@
     </header>
 
     <main>
-        <form id="characterForm">
-            <section class="container">
-            
-                <div class="row">
+
+        <form id="characterForm" class="row">
+
+                    <div class="col text-center">
                         <!-- Dropdown character.1 -->
-                        <select  class="form-select form-select-lg  col" id="charOne">
+                        <select  class="form-select form-select-lg" id="charOne">
                             <option selected data-img="">Choose character</option>
                             <option data-img="">Luke Skywalker</option>
                             <option data-img="/images/C-3PO.svg">C-3PO</option>
@@ -35,8 +42,12 @@
                             <option data-img="">Biggs Darklighter</option>
                             <option data-img="">Obi-Wan Kenobi</option>
                         </select>
-                        <!-- Dropdown character.2 -->
-                        <select  class="form-select form-select-lg  col" id="charTwo">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <!-- Dropdown character.2 -->
+                    <div class="col text-center">
+                        <select  class="form-select form-select-lg" id="charTwo">
                             <option selected data-img="">Choose character</option>
                             <option data-img="">Luke Skywalker</option>
                             <option data-img="/images/C-3PO.svg">C-3PO</option>
@@ -49,14 +60,16 @@
                             <option data-img="">Biggs Darklighter</option>
                             <option data-img="">Obi-Wan Kenobi</option>
                         </select>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    
+                    <div class="col-12 d-grid">
                         <button type="submit">Compare</button>
-                </div>
-            </section>
+                    </div>
+
         </form>
 
-    </main>
-
-    
+    </main>    
     
 </body>
 </html>

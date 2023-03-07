@@ -1,7 +1,7 @@
-* {
-    outline: 1px solid pink;
+// * {
+//     outline: 1px solid pink;
     
-}
+// }
 
 body, h1, h2, h3, h4, p {
     margin: 0;
@@ -14,7 +14,15 @@ h1, h2, h3, h4 {
     font-weight: 900;
 }
 
-button {
+button, select{
     font-family: $heading-primary;
-    padding: 8px 16px;
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border: 1px solid $p-black;
+    border-radius: 40px;
+}
+
+i {
+    font-size: 350px;
 }

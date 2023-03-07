@@ -8,9 +8,6 @@
   header h1 {
     font-size: 8rem;
   }
-  * {
-    outline: 1px solid pink;
-  }
   body, h1, h2, h3, h4, p {
     margin: 0;
     color: #000;
@@ -20,8 +17,15 @@
     line-height: 1;
     font-weight: 900;
   }
-  button {
+  button, select {
     font-family: jedi, serif;
-    padding: 8px 16px;
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border: 1px solid #000;
+    border-radius: 40px;
+  }
+  i {
+    font-size: 350px;
   }
 }/*# sourceMappingURL=style.css.map */
