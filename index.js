@@ -1,26 +1,15 @@
 console.log("Star Wars Trivia");
 
-let API_BASE_URL = "https://swapi.dev/api/people/"
+// -------------------------------------------------------- Set up: fetching API -----------------------------------------------------------
 
-let getData = async() => {
+let API_BASE_URL = "https://swapi.dev/api/"
 
-    let res = await fetch(`${API_BASE_URL}`)
-
+let getData = async(route, params) => {
+   
+    let res = await fetch(`${API_BASE_URL}` + route + params)
     return await res.json();
-
+    
 }
-
-
-
-getData().then((data) => {
-    console.log(data);
-
-    // data.results.forEach(obj => {
-        
-    //     document.body.innerHTML += `Name: ${obj.name} <br>`
-    // });
-  
-})
 
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
 
@@ -38,12 +27,43 @@ class Character {
     }
 }
 
-// -------------------------------------------------------- Form Event Listener -----------------------------------------------------------
+// -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 
 document.querySelector("#characterForm").addEventListener("submit", (e) => {
     e.preventDefault()
 
+    let charOne = document.querySelector("#charOne").value
+    let charTwo = document.querySelector("#charTwo").value
 
-    console.log("submit", e.target)
+    route = "people/?"
+
+    let paramsCharOne = new URLSearchParams({
+        //todo! ta bort !== "any"
+        ...(charOne !== "any" ? { search: charOne } : {})
+    })
+
+    let paramsCharTwo = new URLSearchParams({
+        //todo! ta bort !== "any"
+        ...(charTwo !== "any" ? { search: charTwo } : {})
+    })
+
+    console.log(`${API_BASE_URL}${route}${paramsCharOne}`);
+    console.log(`${API_BASE_URL}${route}${paramsCharTwo}`);
+
+    getData(route, paramsCharOne).then((obj) => {
+        console.log(obj.results);
+    
+        //todo! Skapa metod för html på class prototypen
+        //todo! error hantering - om karaktären ej finns
+        //todo! error hantering - om anv. ej valt två karaktärer
+
+    })
+    getData(route, paramsCharTwo).then((obj) => {
+        console.log(obj.results);
+    
+        //todo! Skapa metod för html på class prototypen
+        //todo! error hantering - om karaktären ej finns
+        //todo! error hantering - om anv. ej valt två karaktärer
+
+    })
 })
-
