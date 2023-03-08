@@ -31,14 +31,14 @@ class Character {
     }
     renderCharacter() {
         charContainer.innerHTML += `
-            <article class="col ${(this.name).toLowerCase()}">
+            <article class="col" data-character="${this.name.toLowerCase().split(' ').join("-")}">
                 <h3>${(this.name).toLowerCase()}</h3>
-                <img src="/images/${this.pictureUrl.toLowerCase()}" alt="Portrait of ${this.name}"/>
+                <img src="/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
             </article>
         `
     }
-    renderProperties() {
-        charContainer.innerHTML += `
+    renderProperties(container) {
+        container.innerHTML += `
             <article class="col">
                 <ul> 
                     <li><span>Hair color: </span>${(this.hairColor)}</li>
@@ -123,6 +123,12 @@ let compareCharacter = () => {
     console.log(charArr);
     event.target.classList.add("hidden")
 
-    charArr.forEach(obj => obj.renderProperties())
+    charArr.forEach(obj => {
+
+        let article = document.querySelector(`[data-character="${obj.name.toLowerCase().split(' ').join("-")}"]`)
+
+        obj.renderProperties(article)
+
+    })
 
 }
