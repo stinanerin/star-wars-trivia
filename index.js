@@ -48,6 +48,10 @@ charForm.addEventListener("submit", (e) => {
     let charTwo = document.querySelector("#charTwo").value
     charForm.classList.add("hidden")
 
+    let compareButton = document.createElement("button")
+    compareButton.innerText = "compare characters"
+    compareButton.addEventListener('click', compareCharacter);
+
     route = "people/?"
 
     let paramsCharOne = new URLSearchParams({
@@ -64,12 +68,13 @@ charForm.addEventListener("submit", (e) => {
     // console.log(`${API_BASE_URL}${route}${paramsCharTwo}`);
 
     getData(route, paramsCharOne).then((obj) => {
-        console.log(obj.results[0]);
 
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
         
         let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
        
+        console.log(charOneProto);
+
         charOneProto.renderCharacter()
     
         //todo! error hantering - om karaktären ej finns
@@ -77,7 +82,6 @@ charForm.addEventListener("submit", (e) => {
 
     })
     getData(route, paramsCharTwo).then((obj) => {
-        console.log(obj.results[0]);
 
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
 
@@ -90,5 +94,17 @@ charForm.addEventListener("submit", (e) => {
         //todo! error hantering - om karaktären ej finns
         //todo! error hantering - om anv. ej valt två karaktärer
 
+        charContainer.append(compareButton)
+
     })
+
 })
+
+
+// -------------------------------------------------------- Compare Character -----------------------------------------------------------
+
+let compareCharacter = () => {
+
+    console.log("hej");
+
+}
