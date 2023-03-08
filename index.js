@@ -1,7 +1,8 @@
 console.log("Star Wars Trivia");
 
 let charContainer = document.querySelector("#compareCharacter")
-let charForm = document.querySelector("#characterForm");
+let charForm = document.querySelector("#characterForm")
+let charArr = []
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 
@@ -30,9 +31,23 @@ class Character {
     }
     renderCharacter() {
         charContainer.innerHTML += `
-            <article class="col">
+            <article class="col ${(this.name).toLowerCase()}">
                 <h3>${(this.name).toLowerCase()}</h3>
                 <img src="/images/${this.pictureUrl.toLowerCase()}" alt="Portrait of ${this.name}"/>
+            </article>
+        `
+    }
+    renderProperties() {
+        charContainer.innerHTML += `
+            <article class="col">
+                <ul> 
+                    <li><span>Hair color: </span>${(this.hairColor)}</li>
+                    <li><span>Gender: </span>${(this.gender)}</li>
+                    <li><span>Heigth: </span>${(this.height)}</li>
+                    <li><span>Mass: </span>${(this.mass)}</li>
+                    <li><span>Skin color: </span>${(this.skinColor)}</li>
+                    <li><span>Movies: </span>${(this.movies.length)}</li>
+                </ul>
             </article>
         `
     }
@@ -72,7 +87,8 @@ charForm.addEventListener("submit", (e) => {
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
         
         let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
-       
+        charArr.push(charOneProto)
+
         console.log(charOneProto);
 
         charOneProto.renderCharacter()
@@ -83,9 +99,11 @@ charForm.addEventListener("submit", (e) => {
     })
     getData(route, paramsCharTwo).then((obj) => {
 
+        // Destructuring
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
 
         let charTwoProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
+        charArr.push(charTwoProto)
 
         console.log(charTwoProto);
 
@@ -97,14 +115,14 @@ charForm.addEventListener("submit", (e) => {
         charContainer.append(compareButton)
 
     })
-
 })
-
 
 // -------------------------------------------------------- Compare Character -----------------------------------------------------------
 
 let compareCharacter = () => {
+    console.log(charArr);
+    event.target.classList.add("hidden")
 
-    console.log("hej");
+    charArr.forEach(obj => obj.renderProperties())
 
 }
