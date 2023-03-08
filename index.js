@@ -25,14 +25,14 @@ class Character {
         this.skinColor = skinColor;
         this.eyeColor = eyeColor;
         this.movies = movies;
-        this.pictureUrl = pictureUrl;
+        this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
         charContainer.innerHTML += `
             <article class="col">
-                <h3${this.name}</h3>
-                <img src="${this.pictureUrl}" alt="Portrait of ${this.name}"/>
-                <p>${this.blaablablalblalalaaa}</p>
+                <h3>${(this.name).toLowerCase()}</h3>
+                <img src="/images/${this.pictureUrl.toLowerCase()}" alt="Portrait of ${this.name}"/>
+                <!--<p>${this.blaablablalblalalaaa}</p>-->
             </article>
         `
     }
@@ -60,12 +60,16 @@ document.querySelector("#characterForm").addEventListener("submit", (e) => {
     })
 
     console.log(`${API_BASE_URL}${route}${paramsCharOne}`);
-    console.log(`${API_BASE_URL}${route}${paramsCharTwo}`);
+    // console.log(`${API_BASE_URL}${route}${paramsCharTwo}`);
 
     getData(route, paramsCharOne).then((obj) => {
         console.log(obj.results[0]);
 
-        renderCharacter()
+        let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
+        
+        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
+       
+        charOneProto.renderCharacter()
     
         //todo! error hantering - om karaktären ej finns
         //todo! error hantering - om anv. ej valt två karaktärer
@@ -74,7 +78,10 @@ document.querySelector("#characterForm").addEventListener("submit", (e) => {
     getData(route, paramsCharTwo).then((obj) => {
         console.log(obj.results[0]);
 
-        renderCharacter()
+        let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
+        let charTwoProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
+        console.log(charTwoProto);
+        charTwoProto.renderCharacter()
     
         //todo! error hantering - om karaktären ej finns
         //todo! error hantering - om anv. ej valt två karaktärer
