@@ -82,7 +82,8 @@ charForm.addEventListener("submit", (e) => {
     console.log(`${API_BASE_URL}${route}${paramsCharOne}`);
     // console.log(`${API_BASE_URL}${route}${paramsCharTwo}`);
 
-    getData(route, paramsCharOne).then((obj) => {
+    getData(route, paramsCharOne)
+    .then((obj) => {
 
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
         
@@ -97,7 +98,14 @@ charForm.addEventListener("submit", (e) => {
         //todo! error hantering - om anv. ej valt två karaktärer
 
     })
-    getData(route, paramsCharTwo).then((obj) => {
+    .catch((error) =>  {
+        console.log(error);
+        let h2 = document.createElement("h2");
+        h2.innerText = "Sorry, we had problems getting the data.. Try again later.";
+        document.body.append(h2);
+    })
+    getData(route, paramsCharTwo)
+    .then((obj) => {
 
         // Destructuring
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
