@@ -1,6 +1,7 @@
 console.log("Star Wars Trivia");
 
 let charContainer = document.querySelector("#compareCharacter")
+let charForm = document.querySelector("#characterForm");
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 
@@ -32,7 +33,6 @@ class Character {
             <article class="col">
                 <h3>${(this.name).toLowerCase()}</h3>
                 <img src="/images/${this.pictureUrl.toLowerCase()}" alt="Portrait of ${this.name}"/>
-                <!--<p>${this.blaablablalblalalaaa}</p>-->
             </article>
         `
     }
@@ -40,12 +40,13 @@ class Character {
 
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 
-document.querySelector("#characterForm").addEventListener("submit", (e) => {
+charForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     charContainer.innerHTML = "";
     let charOne = document.querySelector("#charOne").value
     let charTwo = document.querySelector("#charTwo").value
+    charForm.classList.add("hidden")
 
     route = "people/?"
 
@@ -79,8 +80,11 @@ document.querySelector("#characterForm").addEventListener("submit", (e) => {
         console.log(obj.results[0]);
 
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = obj.results[0];
+
         let charTwoProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
+
         console.log(charTwoProto);
+
         charTwoProto.renderCharacter()
     
         //todo! error hantering - om karaktären ej finns
