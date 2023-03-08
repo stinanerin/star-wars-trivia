@@ -8,6 +8,10 @@ body, h1, h2, h3, h4, p {
     color: $p-black;
 }
 
+.hidden {
+    display: none;
+}
+
 h1, h2, h3, h4 {
     font-family: $heading-primary ;
     line-height: 1;
