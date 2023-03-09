@@ -21,7 +21,7 @@ let getData = async(route, params) => {
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
 
 class Character {
-    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, numMovies, pictureUrl) {
+    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, pictureUrl) {
         this.name = name;
         this.gender = gender;
         this.height = +height;
@@ -30,7 +30,6 @@ class Character {
         this.skinColor = skinColor;
         this.eyeColor = eyeColor;
         this.movies = movies;
-        this.numMovies = +numMovies;
         this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
@@ -45,9 +44,7 @@ class Character {
         `
     }
     renderProperties(container) {
-        console.log(this);
         let charTwo = charArr.find(obj => obj != this)
-        // console.log(charArr.find(obj => obj != this));
         container.innerHTML += `
             <article class="col">
                 <ul class="list-group"> 
@@ -55,8 +52,8 @@ class Character {
                     <li class="list-group-item ">${this.name} is ${(this.gender)}<span class="${this.compareCharacters(this.gender,charTwo.gender)}"> just like ${charTwo.name}</span></li>
                     <li class="list-group-item ${this.compareCharacters(this.height,charTwo.height)}"><span>Heigth: </span>${(this.height)}</li>
                     <li class="list-group-item ${this.compareCharacters(this.mass,charTwo.mass)}"><span>Mass: </span>${(this.mass)}</li>
-                    <li class="list-group-item ">${this.name} has ${(this.skinColor)} skin<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
-                    <li class="list-group-item ${this.compareCharacters(this.numMovies,charTwo.numMovies)}"><span>Movies: </span>${(this.numMovies)}</li>
+                    <li class="list-group-item ">${this.name}´s skin is ${(this.skinColor)}<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
+                    <li class="list-group-item ${this.compareCharacters(this.movies.length,charTwo.movies.length)}"><span>Movies: </span>${(this.movies.length)}</li>
                 </ul>
             </article>
         `
@@ -158,7 +155,7 @@ let loadCharacters = async (charInput) => {
         //todo! bryt ut denna bit?
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = charObj.results[0];
         //todo! fixa dynamiskt namn?
-        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, films.length, name)
+        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
         charArr.push(charOneProto)
 
         console.log(charOneProto);
