@@ -59,7 +59,6 @@ class Character {
         `
     }
     compareCharacters(valueOne, valueTwo, charTwo, str){
-        console.log(this);
         if(typeof valueOne === "string") {
             console.log("we are here");
             if (valueOne === valueTwo) {
@@ -83,7 +82,7 @@ class Character {
                 }
                 return string;
             } else if (valueOne < valueTwo) {
-                return
+                return ""
             } else if (valueOne === valueTwo) {
                 // console.log(`${valueOne} is the same as ${valueTwo}`) 
                 if(str === "length") {
@@ -102,27 +101,33 @@ class Character {
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 
 charForm.addEventListener("submit", (e) => {
-
     e.preventDefault()
+
     let charOneInput = document.querySelector("#charOne").value
     let charTwoInput = document.querySelector("#charTwo").value
     charForm.classList.add("hidden")
+    compareBtn.classList.remove("hidden")
 
-    //todo! Undersök varför loop ej funkar - se graveyard 
-    //todo! ta bort dennna .then()
-    loadCharacters(charOneInput).then(() => {
+    //todo! Brandon!!!! hur i helvääätööö funkar detta???
+    console.log("outside but before",charArr);
 
-        loadCharacters(charTwoInput).then(() => {
-            compareBtn.classList.remove("hidden")
+    //todo! Lös problemas med om anv, gett noll input. - gör bägge required?
+    [charOneInput, charTwoInput].forEach(char => {
+        // Creates a new instance of Character prototype for each user input and adds to global array of characters
+        loadCharacters(char).then(() => {
+            // Finds the last added character instance of the global charArr and renders it to the DOM - without mutating the original array
+            [...charArr].pop().renderCharacter()
+            console.log("errorData", errorData);
             if(errorData) {
-                compareBtn.classList.add("hidden")
                 charContainer.innerHTML= ""
+                compareBtn.classList.add("hidden")
                 let h3 = document.createElement("h3");
                 h3.innerText = "Sorry, we had problems getting the data.. Try again later.";
                 document.body.append(h3);
             }
         })
     })
+    //todo! Brandon!!!! hur i helvääätööö funkar detta???
     console.log("outside",charArr);
 })
 
@@ -134,6 +139,7 @@ let compareCharacter = () => {
     event.target.classList.add("hidden")
 
     charArr.forEach(obj => {
+        console.log("hejsan");
 
         let article = document.querySelector(`[data-character="${obj.name.toLowerCase().split(' ').join("-")}"]`)
 
@@ -141,13 +147,13 @@ let compareCharacter = () => {
 
     })
 }
-// -------------------------------------------------------- Load characters -----------------------------------------------------------
+// -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
 
 
 let loadCharacters = async (charInput) => {
     //todo! error hantering - om karaktären ej finns
-    //todo! error hantering - om anv. ej valt två karaktärer - 
     //todo! dubbelkolla båda om första och andra ej existerar
+    //todo! error hantering - om anv. ej valt två karaktärer - 
     try {
         route = "people/?"
 
@@ -155,7 +161,6 @@ let loadCharacters = async (charInput) => {
             //todo! ta bort !== "any"
             ...(charInput !== "any" ? { search: charInput } : {})
         })
-    
         console.log(`${API_BASE_URL}${route}${params}`);
 
         let charObj = await getData(route, params)
@@ -165,13 +170,9 @@ let loadCharacters = async (charInput) => {
         //todo! fixa dynamiskt namn?
         let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
         charArr.push(charOneProto)
-
-        console.log(charOneProto);
-        charOneProto.renderCharacter()
-           
+  
     } catch (error) {
         errorData = true
-        console.log(error);
+        console.log(error);        
     }
-
 }
