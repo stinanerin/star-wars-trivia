@@ -35,7 +35,7 @@ class Character {
     renderCharacter() {
         console.log("hej");
         charContainer.innerHTML += `
-            <article class="col" data-character="${this.name.toLowerCase().split(' ').join("-")}">
+            <article class="col-sm pb-5" data-character="${this.name.toLowerCase().split(' ').join("-")}">
                 <div class="text-center">
                     <h3>${(this.name).toLowerCase()}</h3>
                     <img class="svg" src="/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>

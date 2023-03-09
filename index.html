@@ -24,9 +24,9 @@
 
     <main class="container">
         <form id="characterForm" class="row gy-5 text-center">
-            <div class="col ">
+            <div class="col-md">
                 <!-- Dropdown character.1 -->
-                <select  class="form-select form-select-lg" id="charOne">
+                <select class="form-select form-select-lg" id="charOne">
                     <option disabled selected>Choose character</option>
                     <option>Chewbacca</option>
                     <option>C-3PO</option>
@@ -38,8 +38,8 @@
                 </select>
                 <i class="fa-solid fa-user pt-5"></i>
             </div>
-            <!-- Dropdown character.2 -->
-            <div class="col ">
+            <div class="col-md">
+                <!-- Dropdown character.2 -->
                 <select class="form-select form-select-lg" id="charTwo">
                     <option disabled selected>Choose character</option>
                     <option>Chewbacca</option>
@@ -56,12 +56,14 @@
             <div class="col-12 d-grid">
                 <button type="submit">Get info</button>
             </div>
+
         </form>
-        <section id="compareCharacter" class="row pt-5">
+
+        <section id="compareCharacter" class="row pt-5 text-center">
            
         
         </section>
-        <div class="col-12 d-grid pt-5" >
+        <div class="col-12 d-grid" >
             <button id="compareBtn" onclick="compareCharacter()" class="hidden">Compare characters</button>
         </div>
 
