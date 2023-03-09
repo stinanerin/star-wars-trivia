@@ -21,15 +21,16 @@ let getData = async(route, params) => {
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
 
 class Character {
-    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, pictureUrl) {
+    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, numMovies, pictureUrl) {
         this.name = name;
         this.gender = gender;
-        this.height = height;
-        this.mass = mass;
+        this.height = +height;
+        this.mass = +mass;
         this.hairColor = hairColor;
         this.skinColor = skinColor;
         this.eyeColor = eyeColor;
         this.movies = movies;
+        this.numMovies = +numMovies;
         this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
@@ -44,19 +45,53 @@ class Character {
         `
     }
     renderProperties(container) {
+        console.log(this);
+        let charTwo = charArr.find(obj => obj != this)
+        // console.log(charArr.find(obj => obj != this));
         container.innerHTML += `
             <article class="col">
                 <ul class="list-group"> 
-                    <li class="list-group-item"><span>Hair color: </span>${(this.hairColor)}</li>
-                    <li class="list-group-item"><span>Gender: </span>${(this.gender)}</li>
-                    <li class="list-group-item"><span>Heigth: </span>${(this.height)}</li>
-                    <li class="list-group-item"><span>Mass: </span>${(this.mass)}</li>
-                    <li class="list-group-item"><span>Skin color: </span>${(this.skinColor)}</li>
-                    <li class="list-group-item"><span>Movies: </span>${(this.movies.length)}</li>
+                    <li class="list-group-item ">${this.name}'s hair is ${(this.hairColor)}<span class="${this.compareCharacters(this.hairColor,charTwo.hairColor)}"> just like ${charTwo.name}'s hair.</span></li>
+                    <li class="list-group-item ">${this.name} is ${(this.gender)}<span class="${this.compareCharacters(this.gender,charTwo.gender)}"> just like ${charTwo.name}</span></li>
+                    <li class="list-group-item ${this.compareCharacters(this.height,charTwo.height)}"><span>Heigth: </span>${(this.height)}</li>
+                    <li class="list-group-item ${this.compareCharacters(this.mass,charTwo.mass)}"><span>Mass: </span>${(this.mass)}</li>
+                    <li class="list-group-item ">${this.name} has ${(this.skinColor)} skin<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
+                    <li class="list-group-item ${this.compareCharacters(this.numMovies,charTwo.numMovies)}"><span>Movies: </span>${(this.numMovies)}</li>
                 </ul>
             </article>
         `
     }
+    compareCharacters(valueOne, valueTwo){
+        console.log(typeof valueOne, typeof valueTwo);
+        if(typeof valueOne === "string") {
+            console.log("we are here");
+            if (valueOne === valueTwo) {
+                console.log(`${valueOne} is the same as ${valueTwo}`) 
+                return 
+            }
+            else {
+                console.log(`${valueOne} is not the same as ${valueTwo}`)
+                return "hidden" 
+            }
+        } else {
+            console.log("charTwo", charTwo.name);
+            console.log("this", this.name);
+            if (valueOne > valueTwo){
+                console.log(`${valueOne} is bigger than ${valueTwo}`); 
+                return "text-success"
+            }
+            else if (valueOne < valueTwo) {
+                console.log(`${valueOne} is smaller than ${valueTwo}`)
+                return "text-danger"  
+                 
+            } else {
+                console.log(`${valueOne} is the same as ${valueTwo}`) 
+                return "text-warning "     
+            }
+
+        }
+    }
+    
 }
 
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
@@ -66,15 +101,15 @@ charForm.addEventListener("submit", (e) => {
     e.preventDefault()
     let charOneInput = document.querySelector("#charOne").value
     let charTwoInput = document.querySelector("#charTwo").value
-    compareBtn.classList.remove("hidden")
     charForm.classList.add("hidden")
 
-    //todo! Undersök varför loop ej funkar - se graveyard
+    //todo! Undersök varför loop ej funkar - se graveyard 
+    //todo! ta bort dennna .then()
     loadCharacters(charOneInput).then(() => {
 
         loadCharacters(charTwoInput).then(() => {
+            compareBtn.classList.remove("hidden")
             if(errorData) {
-                console.log("errorData i 2:a", errorData);
                 compareBtn.classList.add("hidden")
                 charContainer.innerHTML= ""
                 let h3 = document.createElement("h3");
@@ -120,10 +155,10 @@ let loadCharacters = async (charInput) => {
 
         let charObj = await getData(route, params)
 
+        //todo! bryt ut denna bit?
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = charObj.results[0];
-        
         //todo! fixa dynamiskt namn?
-        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
+        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, films.length, name)
         charArr.push(charOneProto)
 
         console.log(charOneProto);
