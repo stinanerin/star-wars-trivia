@@ -38,7 +38,7 @@ class Character {
             <article class="col-sm pb-5" data-character="${this.name.toLowerCase().split(' ').join("-")}">
                 <div class="text-center">
                     <h3>${(this.name).toLowerCase()}</h3>
-                    <img class="svg" src="/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
+                    <img class="svg" src="/assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
                 </div>
             </article>
         `
@@ -111,7 +111,6 @@ charForm.addEventListener("submit", (e) => {
     //todo! Brandon!!!! hur i helvääätööö funkar detta???
     console.log("outside but before",charArr);
 
-    //todo! Lös problemas med om anv, gett noll input. - gör bägge required?
     [charOneInput, charTwoInput].forEach(char => {
         // Creates a new instance of Character prototype for each user input and adds to global array of characters
         loadCharacters(char).then(() => {
@@ -131,18 +130,17 @@ charForm.addEventListener("submit", (e) => {
     console.log("outside",charArr);
 })
 
-// -------------------------------------------------------- Compare Character -----------------------------------------------------------
+// -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
 
 let compareCharacter = () => {
-    console.log("clicked");
-    console.log(charArr);
+    // Targets clicked button with display:none
     event.target.classList.add("hidden")
 
     charArr.forEach(obj => {
-        console.log("hejsan");
-
+        
         let article = document.querySelector(`[data-character="${obj.name.toLowerCase().split(' ').join("-")}"]`)
-
+        
+        //todo! borde kanske göra om till redan existerande html där jag togglar hidden class kom jag på nu?
         obj.renderProperties(article)
 
     })
@@ -161,7 +159,7 @@ let loadCharacters = async (charInput) => {
             //todo! ta bort !== "any"
             ...(charInput !== "any" ? { search: charInput } : {})
         })
-        console.log(`${API_BASE_URL}${route}${params}`);
+        // console.log(`${API_BASE_URL}${route}${params}`);
 
         let charObj = await getData(route, params)
 
@@ -173,6 +171,6 @@ let loadCharacters = async (charInput) => {
   
     } catch (error) {
         errorData = true
-        console.log(error);        
+        // console.log(error);        
     }
 }
