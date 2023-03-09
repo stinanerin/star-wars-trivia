@@ -38,7 +38,7 @@ class Character {
             <article class="col-sm pb-5" data-character="${this.name.toLowerCase().split(' ').join("-")}">
                 <div class="text-center">
                     <h3>${(this.name).toLowerCase()}</h3>
-                    <img class="svg" src="/assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
+                    <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
                 </div>
             </article>
         `
