@@ -83,7 +83,7 @@ class Character {
                 }
                 return string;
             } else if (valueOne < valueTwo) {
-                return "";
+                return
             } else if (valueOne === valueTwo) {
                 // console.log(`${valueOne} is the same as ${valueTwo}`) 
                 if(str === "length") {

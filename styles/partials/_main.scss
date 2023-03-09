@@ -34,5 +34,8 @@ i {
     font-size: 250px;
 }
 .svg {
-    height: 250px;
+    height: 150px;
+    @media($md){
+        height: 250px;
+    }
 }

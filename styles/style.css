@@ -35,6 +35,11 @@
     font-size: 250px;
   }
   .svg {
-    height: 250px;
+    height: 150px;
+  }
+  @media (width >= 768px) {
+    .svg {
+      height: 250px;
+    }
   }
 }/*# sourceMappingURL=style.css.map */
