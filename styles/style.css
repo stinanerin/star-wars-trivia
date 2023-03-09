@@ -6,7 +6,7 @@
 @layer bootstrap, special-styles;
 @layer special-styles {
   header h1 {
-    font-size: 8rem;
+    font-size: 3rem;
   }
   body, h1, h2, h3, h4, p {
     margin: 0;
@@ -20,6 +20,9 @@
     line-height: 1;
     font-weight: 900;
   }
+  h1:not(h1), h2:not(h1), h3:not(h1), h4:not(h1) {
+    padding-bottom: 1em;
+  }
   button, select {
     font-family: jedi, serif;
     font-size: 1.25rem;
@@ -30,5 +33,8 @@
   }
   i {
     font-size: 250px;
+  }
+  .svg {
+    height: 250px;
   }
 }/*# sourceMappingURL=style.css.map */

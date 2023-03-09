@@ -16,63 +16,50 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    <header class="text-center">
 
-        <h1 class="mb-5">Star Wars Trivia</h1>
-        <h2 class="mb-5">Compare Characters</h2>
-        
+    <header class="text-center">
+        <h1 class="m-5">Star Wars Trivia</h1>
+        <h2>Compare Characters</h2>
     </header>
 
-    <main>
-
-        <form id="characterForm" class="row text-center">
-
-            <div class="col">
+    <main class="container">
+        <form id="characterForm" class="row gy-5 text-center">
+            <div class="col ">
                 <!-- Dropdown character.1 -->
                 <select  class="form-select form-select-lg" id="charOne">
                     <option disabled selected>Choose character</option>
-                    <option >chewbacca</option>
-                    <option >C-3PO</option>
-                    <option >R2-D2</option>
-                    <option >darth vader</option>
-                    <option >leia organa</option>
-                    <option >yoda</option>
-                    <option >BB-8</option>
+                    <option>Chewbacca</option>
+                    <option>C-3PO</option>
+                    <option>R2-D2</option>
+                    <option>Darth Vader</option>
+                    <option>Leia Organa</option>
+                    <option>Yoda</option>
+                    <option>BB-8</option>
                 </select>
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user pt-5"></i>
             </div>
-
             <!-- Dropdown character.2 -->
-            <div class="col">
+            <div class="col ">
                 <select class="form-select form-select-lg" id="charTwo">
                     <option disabled selected>Choose character</option>
-                    <option >chewbacca</option>
-                    <option >C-3PO</option>
+                    <option>Chewbacca</option>
+                    <option>C-3PO</option>
                     <option>R2-D2</option>
-                    <option >darth vader</option>
-                    <option >leia organa</option>
-                    <option >yoda</option>
-                    <option >BB-8</option>
+                    <option>Darth Vader</option>
+                    <option>Leia Organa</option>
+                    <option>Yoda</option>
+                    <option>BB-8</option>
                 </select>
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user pt-5"></i>
             </div>
-            
+        
             <div class="col-12 d-grid">
                 <button type="submit">Get info</button>
             </div>
-
         </form>
-        <section id="compareCharacter" class="row">
-            <!-- <article class="col">
-                <h3>Leia</h3>
-                <img src="/images/leia.svg" alt="Leia"/>
-                <p>Infoooo</p>
-            </article>
-            <article class="col">
-                <h3>Leia</h3>
-                <img src="/images/leia.svg" alt="Leia"/>
-                <p>Infoooo</p>
-            </article> -->
+        <section id="compareCharacter" class="row pt-5">
+           
+        
         </section>
         <div>
             <button id="compareBtn" onclick="compareCharacter()" class="hidden">Compare characters</button>

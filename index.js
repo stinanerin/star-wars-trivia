@@ -38,7 +38,7 @@ class Character {
             <article class="col" data-character="${this.name.toLowerCase().split(' ').join("-")}">
                 <div class="text-center">
                     <h3>${(this.name).toLowerCase()}</h3>
-                    <img src="/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
+                    <img class="svg" src="/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
                 </div>
             </article>
         `
@@ -46,49 +46,57 @@ class Character {
     renderProperties(container) {
         let charTwo = charArr.find(obj => obj != this)
         container.innerHTML += `
-            <article class="col">
+            <article class="col mt-4">
                 <ul class="list-group"> 
                     <li class="list-group-item ">${this.name}'s hair is ${(this.hairColor)}<span class="${this.compareCharacters(this.hairColor,charTwo.hairColor)}"> just like ${charTwo.name}'s hair.</span></li>
                     <li class="list-group-item ">${this.name} is ${(this.gender)}<span class="${this.compareCharacters(this.gender,charTwo.gender)}"> just like ${charTwo.name}</span></li>
-                    <li class="list-group-item ${this.compareCharacters(this.height,charTwo.height)}"><span>Heigth: </span>${(this.height)}</li>
-                    <li class="list-group-item ${this.compareCharacters(this.mass,charTwo.mass)}"><span>Mass: </span>${(this.mass)}</li>
+                    <li class="list-group-item ">${this.name} is ${(this.height)} cm tall<span> ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}</span></li>
+                    <li class="list-group-item ">${this.name} weighs ${this.mass} kg<span> ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")} </span></li>
                     <li class="list-group-item ">${this.name}´s skin is ${(this.skinColor)}<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
-                    <li class="list-group-item ${this.compareCharacters(this.movies.length,charTwo.movies.length)}"><span>Movies: </span>${(this.movies.length)}</li>
+                    <li class="list-group-item">${this.name} has been in ${(this.movies.length)} movies<span> ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")} </span></li>
                 </ul>
             </article>
         `
     }
-    compareCharacters(valueOne, valueTwo){
-        console.log(typeof valueOne, typeof valueTwo);
+    compareCharacters(valueOne, valueTwo, charTwo, str){
+        console.log(this);
         if(typeof valueOne === "string") {
             console.log("we are here");
             if (valueOne === valueTwo) {
-                console.log(`${valueOne} is the same as ${valueTwo}`) 
+                // console.log(`${valueOne} is the same as ${valueTwo}`) 
                 return 
             }
             else {
-                console.log(`${valueOne} is not the same as ${valueTwo}`)
+                // console.log(`${valueOne} is not the same as ${valueTwo}`)
                 return "hidden" 
             }
         } else {
-            console.log("charTwo", charTwo.name);
-            console.log("this", this.name);
+            let string;
             if (valueOne > valueTwo){
-                console.log(`${valueOne} is bigger than ${valueTwo}`); 
-                return "text-success"
+                // console.log(`${valueOne} is bigger than ${valueTwo}`)
+                if(str === "length") {
+                    string = `, and has therefore been in ${this.movies.length - charTwo.movies.length} more movies than ${charTwo.name}`
+                } else if (str === "mass") {
+                    string = `, which is ${this.mass - charTwo.mass} kg more than ${charTwo.name}, who weighs in on ${charTwo.mass} kg`
+                }else if (str === "height") {
+                    string = `, and therefore taller than ${charTwo.name}, who is only ${charTwo.height} cm`
+                }
+                return string;
+            } else if (valueOne < valueTwo) {
+                return "";
+            } else if (valueOne === valueTwo) {
+                // console.log(`${valueOne} is the same as ${valueTwo}`) 
+                if(str === "length") {
+                    string = `, the same amount as ${charTwo.name}`
+                } else if (str === "mass") {
+                    string = `, the same as ${charTwo.name}`
+                }else if (str === "height") {
+                    string = `, just as ${charTwo.name}`
+                }
+                return string;
             }
-            else if (valueOne < valueTwo) {
-                console.log(`${valueOne} is smaller than ${valueTwo}`)
-                return "text-danger"  
-                 
-            } else {
-                console.log(`${valueOne} is the same as ${valueTwo}`) 
-                return "text-warning "     
-            }
-
         }
     }
-    
 }
 
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
