@@ -1,5 +1,3 @@
-console.log("Star Wars Trivia");
-
 let charContainer = document.querySelector("#compareCharacter")
 let charForm = document.querySelector("#characterForm")
 let compareBtn = document.querySelector("#compareBtn")
@@ -10,7 +8,7 @@ let errorDiv = document.createElement("div");
 
 let charArr = []
 let duplicateChar;
-
+let movieArr;
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 
@@ -18,7 +16,9 @@ let API_BASE_URL = "https://swapi.dev/api/"
 
 let getData = async(route, params) => {
     try {
-        let res = await fetch(`${API_BASE_URL}${route}${params}`)
+        let res = await fetch(`${API_BASE_URL}${route}${params ? params : ""}`)
+        // let res2 = await fetch(`${API_BASE_URL}/people`)
+        // console.log(await res2.json());
         return  await res.json();
     } catch (error) {
         // console.log(error);
@@ -74,7 +74,7 @@ class Character {
                     <div class="col-6"><button class="method p-3 home-planets">Homeplanets</button></div>
                     <div class="col-6"><button class="method p-3 vehicles">Vehicle</button></div>
                 </div>
-                <div class="method-results"></div>
+                <p class="method-results"></p>
             </section>
         `
         // All game-play event-listeners
@@ -123,12 +123,12 @@ class Character {
             }
         }
     }
-    compareDebut() {
-        console.log("compared", this);
-
+    compareDebut = async () => {
+        const [first, last] = this.movies[0].split("api/");
+        let firstMovie = await getData(last) 
+        console.log(`${this.name} first appeared ${firstMovie.release_date} in ${firstMovie.title}.`);     
     }
 }
-
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 
 charForm.addEventListener("submit", (e) => {
@@ -188,7 +188,7 @@ let loadCharacters = async (charInput) => {
             //todo! ta bort !== "any"
             ...(charInput != "" ? { search: charInput } : "")
         })
-        // console.log(`${API_BASE_URL}${route}${params}`);
+        console.log(`${API_BASE_URL}${route}${params}`);
         
         let charObj = await getData(route, params)
 
@@ -220,3 +220,4 @@ charForm.addEventListener('change', (e) => {
         charTwoChoice.classList.add("error")
     }
 });
+  
