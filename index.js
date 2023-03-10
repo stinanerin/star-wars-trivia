@@ -3,11 +3,10 @@ console.log("Star Wars Trivia");
 let charContainer = document.querySelector("#compareCharacter")
 let charForm = document.querySelector("#characterForm")
 let compareBtn = document.querySelector("#compareBtn")
-let h3 = document.createElement("h3");
-let errorDiv = document.createElement("div");
-
 let charOneChoice = document.querySelector("#charOne")
 let charTwoChoice = document.querySelector("#charTwo")
+let h3 = document.createElement("h3");
+let errorDiv = document.createElement("div");
 
 let charArr = []
 let duplicateChar;
@@ -20,9 +19,7 @@ let API_BASE_URL = "https://swapi.dev/api/"
 let getData = async(route, params) => {
     try {
         let res = await fetch(`${API_BASE_URL}${route}${params}`)
-        console.log(res);
         return  await res.json();
-         
     } catch (error) {
         // console.log(error);
         compareBtn.classList.add("hidden")
@@ -30,8 +27,6 @@ let getData = async(route, params) => {
         h3.innerText = "Something went wrong.. Please try again later.";
         document.body.append(h3);
     }
-   
-
 }
 
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
@@ -49,7 +44,6 @@ class Character {
         this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
-        console.log("hej");
         charContainer.innerHTML += `
             <article class="col-sm pb-5" data-character="${this.name.toLowerCase().split(' ').join("-")}">
                 <div class="text-center">
@@ -76,7 +70,6 @@ class Character {
     }
     compareCharacters(valueOne, valueTwo, charTwo, str){
         if(typeof valueOne === "string") {
-            console.log("we are here");
             if (valueOne === valueTwo) {
                 // console.log(`${valueOne} is the same as ${valueTwo}`) 
                 return 
@@ -120,16 +113,16 @@ class Character {
 charForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
-    // Checks that the charcters choosen are not the same
+    let charInputArr = [charOneChoice.value, charTwoChoice.value]
+
+    // Prevents user from comparing the same characters
     if(!duplicateChar) {
-        charForm.classList.add("hidden")
         compareBtn.classList.remove("hidden")
-        console.log(compareBtn);
+        charForm.classList.add("hidden")
         
         //todo! Brandon!!!! hur i helvääätööö funkar detta???
-        console.log("outside but before",charArr);
-    
-        [charOneChoice.value, charTwoChoice.value].forEach(char => {
+        // console.log("outside but before",charArr);
+        charInputArr.forEach(char => {
             // Creates a new instance of Character prototype for each user input and adds to global array of characters
             loadCharacters(char).then(() => {
                 
@@ -138,9 +131,9 @@ charForm.addEventListener("submit", (e) => {
                 
             })
         })
-    
+        
         //todo! Brandon!!!! hur i helvääätööö funkar detta???
-        console.log("outside",charArr);
+        // console.log("outside",charArr);
 
     }
 })
@@ -174,7 +167,7 @@ let loadCharacters = async (charInput) => {
             //todo! ta bort !== "any"
             ...(charInput != "" ? { search: charInput } : "")
         })
-        console.log(`${API_BASE_URL}${route}${params}`);
+        // console.log(`${API_BASE_URL}${route}${params}`);
         
         let charObj = await getData(route, params)
 
@@ -188,7 +181,7 @@ let loadCharacters = async (charInput) => {
   
     
 }
-// -------------------------------------------------------- Informs user if they ahve choosen the same character -----------------------------------------------------------
+// -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
 
 charForm.addEventListener('change', (e) => {
     duplicateChar = false
