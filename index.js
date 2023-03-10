@@ -10,7 +10,6 @@ let charArr = []
 let duplicateChar;
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
-
 let API_BASE_URL = "https://swapi.dev/api/"
 
 let getData = async(route, params) => {
@@ -27,11 +26,9 @@ let getData = async(route, params) => {
         document.body.append(h3);
     }
 }
-
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
-
 class Character {
-    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, pictureUrl) {
+    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, homePlanet, pictureUrl) {
         this.name = name;
         this.gender = gender;
         this.height = +height;
@@ -40,6 +37,7 @@ class Character {
         this.skinColor = skinColor;
         this.eyeColor = eyeColor;
         this.movies = movies;
+        this.homePlanet = homePlanet;
         this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
@@ -79,7 +77,7 @@ class Character {
         // All game-play event-listeners
         container.querySelector(".compare-debut").addEventListener("click", () => this.compareDebut())
         container.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
-        container.querySelector(".home-planets").addEventListener("click", () =>  this.compareDebut())  
+        container.querySelector(".home-planets").addEventListener("click", () =>  this.compareHomePlanet(charTwo))  
         container.querySelector(".vehicles").addEventListener("click", () =>  this.compareDebut())  
 
         // onclick="${this.compareDebut()}
@@ -134,6 +132,14 @@ class Character {
         let sharedMovies = movieArr.filter((movie) => movieArr2.includes(movie));
         console.log("sharedMovies", sharedMovies);
     }
+    compareHomePlanet = async (charTwo) => {
+        let homePlanet = await getData(chopChop(this.homePlanet)) 
+        let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
+        console.log("print this ", homePlanet.name);
+        if(homePlanet.name === homePlanet2.name) {
+            console.log(`print that they have the same homeplanet, ${homePlanet.name} = ${homePlanet2.name}`);
+        }    
+    }
 }
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 
@@ -180,8 +186,8 @@ let compareCharacter = () => {
 
     })
 }
-// -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
 
+// -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
 let loadCharacters = async (charInput) => {
     //todo! error hantering - om karaktären ej finns
     //todo! dubbelkolla båda om första och andra ej existerar
@@ -199,15 +205,14 @@ let loadCharacters = async (charInput) => {
 
         //todo! bryt ut denna bit?
         // Destructuring the character object fetched from API
-        let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = charObj.results[0];
+        let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld } = charObj.results[0];
         //todo! fixa dynamiskt namn?
         // Creates new Character instance with thee data from the character obj fetched from the API
-        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
+        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, name)
         charArr.push(charOneProto)
-  
 }
-// -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
 
+// -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
 charForm.addEventListener('change', (e) => {
     duplicateChar = false
     charOneChoice.classList.remove("error")
@@ -235,3 +240,4 @@ let fetchFilmTitles = async (arr) => {
     let results = await Promise.all(moviesArr)
     return results.map(movie => movie.title)
 }
+
