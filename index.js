@@ -56,7 +56,7 @@ class Character {
     renderProperties(container) {
         let charTwo = charArr.find(obj => obj != this)
         container.innerHTML += `
-            <article class="col mt-4">
+            <section class="col my-4">
                 <ul class="list-group"> 
                     <li class="list-group-item ">${this.name}'s hair is ${(this.hairColor)}<span class="${this.compareCharacters(this.hairColor,charTwo.hairColor)}"> just like ${charTwo.name}'s hair.</span></li>
                     <li class="list-group-item ">${this.name} is ${(this.gender)}<span class="${this.compareCharacters(this.gender,charTwo.gender)}"> just like ${charTwo.name}</span></li>
@@ -65,8 +65,25 @@ class Character {
                     <li class="list-group-item ">${this.name}´s skin is ${(this.skinColor)}<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
                     <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies<span> ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")} </span></li>
                 </ul>
-            </article>
+            </section>
+            <section class="container">
+                <h4>Tell me more how we are different?</h4>
+                <div class="row g-2">
+                    <div class="col-6"><button class="method p-3 compare-debut">Onscreen debut</button></div>
+                    <div class="col-6"><button class="method p-3 movie-list">Movielist</button></div>
+                    <div class="col-6"><button class="method p-3 home-planets">Homeplanets</button></div>
+                    <div class="col-6"><button class="method p-3 vehicles">Vehicle</button></div>
+                </div>
+                <div class="method-results"></div>
+            </section>
         `
+        // All game-play event-listeners
+        container.querySelector(".compare-debut").addEventListener("click", () => this.compareDebut())
+        container.querySelector(".movie-list").addEventListener("click", () => this.compareDebut())
+        container.querySelector(".home-planets").addEventListener("click", () =>  this.compareDebut())  
+        container.querySelector(".vehicles").addEventListener("click", () =>  this.compareDebut())  
+
+        // onclick="${this.compareDebut()}
     }
     compareCharacters(valueOne, valueTwo, charTwo, str){
         if(typeof valueOne === "string") {
@@ -105,6 +122,10 @@ class Character {
                 return string;
             }
         }
+    }
+    compareDebut() {
+        console.log("compared", this);
+
     }
 }
 

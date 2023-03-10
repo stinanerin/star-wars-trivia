@@ -28,6 +28,12 @@ button, select{
     background-color: transparent;
     border: 1px solid $p-black;
     border-radius: 40px;
+    &.method {
+        font-size: 0.8rem;
+        font-family: $body;
+        width: 100%;
+        font-weight: 900;
+    }
 }
 
 i {
