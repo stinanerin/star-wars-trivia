@@ -42,4 +42,20 @@
       height: 250px;
     }
   }
+  .error {
+    color: hsl(354deg, 62%, 43%);
+    border-color: hsl(354deg, 62%, 43%);
+    -webkit-text-fill-color: hsl(354deg, 62%, 43%);
+    box-shadow: 0 0 0px 1000px hsl(354deg, 62%, 43%) inset;
+    -webkit-box-shadow: 0 0 0px 1000px hsl(355deg, 70%, 91%) inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  .error:-webkit-autofill, .error:-webkit-autofill:focus {
+    border-color: hsl(354deg, 62%, 43%);
+    -webkit-text-fill-color: hsl(354deg, 62%, 43%);
+    box-shadow: 0 0 0px 1000px hsl(354deg, 62%, 43%) inset;
+    -webkit-box-shadow: 0 0 0px 1000px hsl(355deg, 70%, 91%) inset;
+    -webkit-transition: background-color 5000s ease-in-out 0s;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }/*# sourceMappingURL=style.css.map */

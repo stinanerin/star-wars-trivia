@@ -4,13 +4,18 @@ let charContainer = document.querySelector("#compareCharacter")
 let charForm = document.querySelector("#characterForm")
 let compareBtn = document.querySelector("#compareBtn")
 let h3 = document.createElement("h3");
+let errorDiv = document.createElement("div");
+
+let charOneChoice = document.querySelector("#charOne")
+let charTwoChoice = document.querySelector("#charTwo")
 
 let charArr = []
-let errorData = false;
+let duplicateChar;
+
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 
-let API_BASE_URL = "https://swa6pi.dev/api/"
+let API_BASE_URL = "https://swapi.dev/api/"
 
 let getData = async(route, params) => {
     try {
@@ -115,28 +120,29 @@ class Character {
 charForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
-    let charOneInput = document.querySelector("#charOne").value
-    let charTwoInput = document.querySelector("#charTwo").value
-    charForm.classList.add("hidden")
-    compareBtn.classList.remove("hidden")
-    console.log(compareBtn);
+    // Checks that the charcters choosen are not the same
+    if(!duplicateChar) {
+        charForm.classList.add("hidden")
+        compareBtn.classList.remove("hidden")
+        console.log(compareBtn);
+        
+        //todo! Brandon!!!! hur i helvääätööö funkar detta???
+        console.log("outside but before",charArr);
     
-    //todo! Brandon!!!! hur i helvääätööö funkar detta???
-    console.log("outside but before",charArr);
-
-    [charOneInput, charTwoInput].forEach(char => {
-        // Creates a new instance of Character prototype for each user input and adds to global array of characters
-        loadCharacters(char).then(() => {
-            
-            // Finds the last added character instance of the global charArr and renders it to the DOM - without mutating the original array
-            [...charArr].pop().renderCharacter()
-            
+        [charOneChoice.value, charTwoChoice.value].forEach(char => {
+            // Creates a new instance of Character prototype for each user input and adds to global array of characters
+            loadCharacters(char).then(() => {
+                
+                // Finds the last added character instance of the global charArr and renders it to the DOM - without mutating the original array
+                [...charArr].pop().renderCharacter()
+                
+            })
         })
-    })
+    
+        //todo! Brandon!!!! hur i helvääätööö funkar detta???
+        console.log("outside",charArr);
 
-    //todo! Brandon!!!! hur i helvääätööö funkar detta???
-    console.log("outside",charArr);
-
+    }
 })
 
 // -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
@@ -182,7 +188,21 @@ let loadCharacters = async (charInput) => {
   
     
 }
-// -------------------------------------------------------- Error display -----------------------------------------------------------
+// -------------------------------------------------------- Informs user if they ahve choosen the same character -----------------------------------------------------------
 
-//todo! error hantering - om anv. valt samma två karaktärer - 
+charForm.addEventListener('change', (e) => {
+    duplicateChar = false
+    charOneChoice.classList.remove("error")
+    charTwoChoice.classList.remove("error")
+    errorDiv.innerText = ""
 
+    if(charOneChoice.value === charTwoChoice.value) {
+        // console.log("you have choosen the same character dummy");
+        duplicateChar = true;
+
+        errorDiv.innerText = "It is more fun if you don't compare the same character:)"
+        charForm.prepend(errorDiv)
+        charOneChoice.classList.add("error")
+        charTwoChoice.classList.add("error")
+    }
+});
