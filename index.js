@@ -8,7 +8,6 @@ let errorDiv = document.createElement("div");
 
 let charArr = []
 let duplicateChar;
-let movieArr;
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 
@@ -79,7 +78,7 @@ class Character {
         `
         // All game-play event-listeners
         container.querySelector(".compare-debut").addEventListener("click", () => this.compareDebut())
-        container.querySelector(".movie-list").addEventListener("click", () => this.compareDebut())
+        container.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
         container.querySelector(".home-planets").addEventListener("click", () =>  this.compareDebut())  
         container.querySelector(".vehicles").addEventListener("click", () =>  this.compareDebut())  
 
@@ -124,9 +123,16 @@ class Character {
         }
     }
     compareDebut = async () => {
-        const [first, last] = this.movies[0].split("api/");
-        let firstMovie = await getData(last) 
+        let firstMovie = await getData(chopChop(this.movies[0])) 
         console.log(`${this.name} first appeared ${firstMovie.release_date} in ${firstMovie.title}.`);     
+    }
+    compareFilms = async (charTwo) => {
+        let movieArr = await fetchFilmTitles(this.movies)
+        let movieArr2 = await fetchFilmTitles(charTwo.movies)
+        console.log("movieArr", movieArr);
+        console.log("movieArr2", movieArr2);
+        let sharedMovies = movieArr.filter((movie) => movieArr2.includes(movie));
+        console.log("sharedMovies", sharedMovies);
     }
 }
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
@@ -152,9 +158,9 @@ charForm.addEventListener("submit", (e) => {
                 
             })
         })
-        
+
         //todo! Brandon!!!! hur i helvääätööö funkar detta???
-        // console.log("outside",charArr);
+        console.log("outside",charArr);
 
     }
 })
@@ -175,7 +181,6 @@ let compareCharacter = () => {
     })
 }
 // -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
-
 
 let loadCharacters = async (charInput) => {
     //todo! error hantering - om karaktären ej finns
@@ -200,7 +205,6 @@ let loadCharacters = async (charInput) => {
         let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
         charArr.push(charOneProto)
   
-    
 }
 // -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
 
@@ -221,3 +225,13 @@ charForm.addEventListener('change', (e) => {
     }
 });
   
+let chopChop =  url => {
+    const [first, last] = url.split("api/");
+    return last
+}
+
+let fetchFilmTitles = async (arr) => {
+    let moviesArr = arr.map(movie => getData(chopChop(movie)));
+    let results = await Promise.all(moviesArr)
+    return results.map(movie => movie.title)
+}
