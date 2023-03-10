@@ -3,18 +3,29 @@ console.log("Star Wars Trivia");
 let charContainer = document.querySelector("#compareCharacter")
 let charForm = document.querySelector("#characterForm")
 let compareBtn = document.querySelector("#compareBtn")
+let h3 = document.createElement("h3");
 
 let charArr = []
 let errorData = false;
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 
-let API_BASE_URL = "https://swapi.dev/api/"
+let API_BASE_URL = "https://swa6pi.dev/api/"
 
 let getData = async(route, params) => {
+    try {
+        let res = await fetch(`${API_BASE_URL}${route}${params}`)
+        console.log(res);
+        return  await res.json();
+         
+    } catch (error) {
+        // console.log(error);
+        compareBtn.classList.add("hidden")
+        charContainer.innerHTML= ""
+        h3.innerText = "Something went wrong.. Please try again later.";
+        document.body.append(h3);
+    }
    
-    let res = await fetch(`${API_BASE_URL}` + route + params)
-    return await res.json();
 
 }
 
@@ -53,7 +64,7 @@ class Character {
                     <li class="list-group-item ">${this.name} is ${(this.height)} cm tall<span> ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}</span></li>
                     <li class="list-group-item ">${this.name} weighs ${this.mass} kg<span> ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")} </span></li>
                     <li class="list-group-item ">${this.name}´s skin is ${(this.skinColor)}<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
-                    <li class="list-group-item">${this.name} has been in ${(this.movies.length)} movies<span> ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")} </span></li>
+                    <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies<span> ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")} </span></li>
                 </ul>
             </article>
         `
@@ -74,7 +85,7 @@ class Character {
             if (valueOne > valueTwo){
                 // console.log(`${valueOne} is bigger than ${valueTwo}`)
                 if(str === "length") {
-                    string = `, and has therefore been in ${this.movies.length - charTwo.movies.length} more movies than ${charTwo.name}`
+                    string = `, compared to ${charTwo.name}'s measly ${charTwo.movies.length} movie appearances.`
                 } else if (str === "mass") {
                     string = `, which is ${this.mass - charTwo.mass} kg more than ${charTwo.name}, who weighs in on ${charTwo.mass} kg`
                 }else if (str === "height") {
@@ -82,6 +93,7 @@ class Character {
                 }
                 return string;
             } else if (valueOne < valueTwo) {
+                //todo! Vill jag lägga tillbaka?
                 return ""
             } else if (valueOne === valueTwo) {
                 // console.log(`${valueOne} is the same as ${valueTwo}`) 
@@ -107,27 +119,24 @@ charForm.addEventListener("submit", (e) => {
     let charTwoInput = document.querySelector("#charTwo").value
     charForm.classList.add("hidden")
     compareBtn.classList.remove("hidden")
-
+    console.log(compareBtn);
+    
     //todo! Brandon!!!! hur i helvääätööö funkar detta???
     console.log("outside but before",charArr);
 
     [charOneInput, charTwoInput].forEach(char => {
         // Creates a new instance of Character prototype for each user input and adds to global array of characters
         loadCharacters(char).then(() => {
+            
             // Finds the last added character instance of the global charArr and renders it to the DOM - without mutating the original array
             [...charArr].pop().renderCharacter()
-            console.log("errorData", errorData);
-            if(errorData) {
-                charContainer.innerHTML= ""
-                compareBtn.classList.add("hidden")
-                let h3 = document.createElement("h3");
-                h3.innerText = "Sorry, we had problems getting the data.. Try again later.";
-                document.body.append(h3);
-            }
+            
         })
     })
+
     //todo! Brandon!!!! hur i helvääätööö funkar detta???
     console.log("outside",charArr);
+
 })
 
 // -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
@@ -152,25 +161,28 @@ let loadCharacters = async (charInput) => {
     //todo! error hantering - om karaktären ej finns
     //todo! dubbelkolla båda om första och andra ej existerar
     //todo! error hantering - om anv. ej valt två karaktärer - 
-    try {
+    // try {
         route = "people/?"
 
         let params = new URLSearchParams({
             //todo! ta bort !== "any"
-            ...(charInput !== "any" ? { search: charInput } : {})
+            ...(charInput != "" ? { search: charInput } : "")
         })
-        // console.log(`${API_BASE_URL}${route}${params}`);
-
+        console.log(`${API_BASE_URL}${route}${params}`);
+        
         let charObj = await getData(route, params)
 
         //todo! bryt ut denna bit?
+        // Destructuring the character object fetched from API
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films } = charObj.results[0];
         //todo! fixa dynamiskt namn?
+        // Creates new Character instance with thee data from the character obj fetched from the API
         let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, name)
         charArr.push(charOneProto)
   
-    } catch (error) {
-        errorData = true
-        // console.log(error);        
-    }
+    
 }
+// -------------------------------------------------------- Error display -----------------------------------------------------------
+
+//todo! error hantering - om anv. valt samma två karaktärer - 
+
