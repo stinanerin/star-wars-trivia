@@ -28,7 +28,7 @@ let getData = async(route, params) => {
 }
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
 class Character {
-    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, homePlanet, pictureUrl) {
+    constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, homePlanet, vehicles, starships, pictureUrl) {
         this.name = name;
         this.gender = gender;
         this.height = +height;
@@ -38,6 +38,8 @@ class Character {
         this.eyeColor = eyeColor;
         this.movies = movies;
         this.homePlanet = homePlanet;
+        this.vehicles = vehicles;
+        this.starships = starships;
         this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
@@ -78,7 +80,7 @@ class Character {
         container.querySelector(".compare-debut").addEventListener("click", () => this.compareDebut())
         container.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
         container.querySelector(".home-planets").addEventListener("click", () =>  this.compareHomePlanet(charTwo))  
-        container.querySelector(".vehicles").addEventListener("click", () =>  this.compareDebut())  
+        container.querySelector(".vehicles").addEventListener("click", () =>  this.compareVehicles())  
 
         // onclick="${this.compareDebut()}
     }
@@ -125,11 +127,11 @@ class Character {
         console.log(`${this.name} first appeared ${firstMovie.release_date} in ${firstMovie.title}.`);     
     }
     compareFilms = async (charTwo) => {
-        let movieArr = await fetchFilmTitles(this.movies)
-        let movieArr2 = await fetchFilmTitles(charTwo.movies)
-        console.log("movieArr", movieArr);
-        console.log("movieArr2", movieArr2);
-        let sharedMovies = movieArr.filter((movie) => movieArr2.includes(movie));
+        let movieArr = await fetchApiUrlArr(this.movies, "title")
+        let movieArr2 = await fetchApiUrlArr(charTwo.movies, "title")
+        console.log("movieArr", movieArr[0]);
+        console.log("movieArr2", movieArr2[0]);
+        let sharedMovies = movieArr[0].filter((movie) => movieArr2[0].includes(movie));
         console.log("sharedMovies", sharedMovies);
     }
     compareHomePlanet = async (charTwo) => {
@@ -139,6 +141,36 @@ class Character {
         if(homePlanet.name === homePlanet2.name) {
             console.log(`print that they have the same homeplanet, ${homePlanet.name} = ${homePlanet2.name}`);
         }    
+    }
+    compareVehicles = async() => {
+        // Fetch array of vehicle prices and array of vehicle objects
+        let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
+        let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
+        console.log("starShipArr most expensive starship", +getMaxValue(starShipArr[0]));
+        console.log("starShipArr", starShipArr[1]);
+        console.log("vehicleArr most expensive vehicle", +getMaxValue(vehicleArr[0]));
+        console.log("vehicleArr", vehicleArr[1]);
+
+        // Array consisting of the value of the most expensive starship & the value of the most expensive vehicle
+        let arrStarVeh = [+getMaxValue(starShipArr[0]), +getMaxValue(vehicleArr[0])]
+        console.log("arrStarVeh", arrStarVeh);
+        // Returns value of the characters most expensive vehicle or starship
+        let max = getMaxValue(arrStarVeh)
+        console.log("max", max);
+        if(max == 0) {
+            console.log(`${this.name} vehicle/starship price is unknown.`);
+        } else {
+            if(arrStarVeh.indexOf(max) == 0) {
+                // Returns the name of the determined most expensive starship
+                let expVehicle = mostExpVeh(starShipArr[1], max)
+                console.log(`${expVehicle} is ${this.name} most expensive starship.`);
+
+            } else {
+                // Returns the name of the determined most expensive vehicle
+                let expVehicle = mostExpVeh(vehicleArr[1], max)
+                console.log(`${expVehicle} is ${this.name} most expensive vehicle.`);
+            }
+        }
     }
 }
 // -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
@@ -164,10 +196,8 @@ charForm.addEventListener("submit", (e) => {
                 
             })
         })
-
         //todo! Brandon!!!! hur i helvääätööö funkar detta???
         console.log("outside",charArr);
-
     }
 })
 
@@ -205,10 +235,10 @@ let loadCharacters = async (charInput) => {
 
         //todo! bryt ut denna bit?
         // Destructuring the character object fetched from API
-        let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld } = charObj.results[0];
+        let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
         //todo! fixa dynamiskt namn?
         // Creates new Character instance with thee data from the character obj fetched from the API
-        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, name)
+        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
         charArr.push(charOneProto)
 }
 
@@ -229,15 +259,35 @@ charForm.addEventListener('change', (e) => {
         charTwoChoice.classList.add("error")
     }
 });
-  
+// Returns incoming url:s unique route
 let chopChop =  url => {
     const [first, last] = url.split("api/");
     return last
 }
-
-let fetchFilmTitles = async (arr) => {
-    let moviesArr = arr.map(movie => getData(chopChop(movie)));
-    let results = await Promise.all(moviesArr)
-    return results.map(movie => movie.title)
+// Returns array of asynchronously fulfilled objects & an array of the values of passed in obj.key
+let fetchApiUrlArr = async (arr, key) => {
+    let resArr = arr.map(elem => getData(chopChop(elem)));
+    let dataArr = await Promise.all(resArr)
+    return [dataArr.map(elem => elem[key]), dataArr]
 }
-
+// Returns the max value of passed in array or zero if array is empty or the value is "unknown"
+let getMaxValue = (arr) => {
+    // console.log("arr inside getMax before reduce", arr);
+    if(arr.length == 0) {
+        // console.log("empty arr");
+        return 0
+    } else {
+        let max = arr.reduce((a, b) => Math.max(a, b));
+        if(max == "unknown") {
+            max = 0
+        } 
+        // console.log("max in get maxVal", +max);
+        return +max
+    }
+}
+// Returns the obj.name from the passed in array which cost_in_credits matches the max-value passed in
+let mostExpVeh = (arr, max) => {
+    // console.log("arr in mostExpVeh", arr);
+    // console.log("max in mostExpVeh", max);
+    return arr.find(obj => obj.cost_in_credits == max).name;
+}
