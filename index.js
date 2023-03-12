@@ -8,7 +8,6 @@ let errorDiv = document.createElement("div");
 
 let charArr = []
 let duplicateChar;
-let resultString;
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 let API_BASE_URL = "https://swapi.dev/api/"
@@ -16,11 +15,8 @@ let API_BASE_URL = "https://swapi.dev/api/"
 let getData = async(route, params) => {
     try {
         let res = await fetch(`${API_BASE_URL}${route}${params ? params : ""}`)
-        // let res2 = await fetch(`${API_BASE_URL}/people`)
-        // console.log(await res2.json());
         return  await res.json();
     } catch (error) {
-        // console.log(error);
         compareBtn.classList.add("hidden")
         charContainer.innerHTML= ""
         h3.innerText = "Something went wrong.. Please try again later.";
@@ -150,17 +146,15 @@ class Character {
         // Fetch array of vehicle prices and array of vehicle objects
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
-        console.log("starShipArr most expensive starship", +getMaxValue(starShipArr[0]));
-        console.log("starShipArr", starShipArr[1]);
-        console.log("vehicleArr most expensive vehicle", +getMaxValue(vehicleArr[0]));
-        console.log("vehicleArr", vehicleArr[1]);
+        console.log("starship maxVal", +getMaxValue(starShipArr[0]), "starshipArr", starShipArr[1]);
+        console.log("vehicle maxVal", +getMaxValue(vehicleArr[0]), "vehicleArr", vehicleArr[1]);
 
         // Array - consists of the value of the most expensive starship & the value of the most expensive vehicle
         let arrStarVeh = [+getMaxValue(starShipArr[0]), +getMaxValue(vehicleArr[0])]
-        console.log("arrStarVeh", arrStarVeh);
+        // console.log("arrStarVeh", arrStarVeh);
         // Determins and returns the value of the characters most expensive vehicle or starship
         let max = getMaxValue(arrStarVeh);
-        console.log("max", max);
+        // console.log("max", max);
         if(max == 0) {
             renderStr(e, `${this.name} hasn't kept the recepits for any of their means of transport.`);
         } else {
@@ -182,7 +176,6 @@ charForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     let charInputArr = [charOneChoice.value, charTwoChoice.value]
-
     // Prevents user from comparing the same characters
     if(!duplicateChar) {
         compareBtn.classList.remove("hidden")
@@ -193,10 +186,8 @@ charForm.addEventListener("submit", (e) => {
         charInputArr.forEach(char => {
             // Creates a new instance of Character prototype for each user input and adds to global array of characters
             loadCharacters(char).then(() => {
-                
                 // Finds the last added character instance of the global charArr and renders it to the DOM - without mutating the original array
                 [...charArr].pop().renderCharacter()
-                
             })
         })
         //todo! Brandon!!!! hur i helvääätööö funkar detta???
@@ -300,18 +291,6 @@ let renderStr = (event, str) => {
     let p = event.target.parentElement.parentElement.nextElementSibling
     p.innerText = str
 }
-// sharedMovies = ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi', 'Revenge of the Sith']
-// let movieStr = ""
-// console.log(movieStr);
-// sharedMovies.forEach((movie, index, array) => {
-//     if(index+1 === array.length) {
-//         movieStr += `& ${movie}.` ;
-//     } else {
-//         movieStr += `${movie}, ` ;
-//     }
-//     console.log(movieStr);
-// })
-// console.log(movieStr);
 
 // Source: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
 let arrayToText = (a) => {
