@@ -8,6 +8,7 @@ let errorDiv = document.createElement("div");
 
 let charArr = []
 let duplicateChar;
+let resultString;
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 let API_BASE_URL = "https://swapi.dev/api/"
@@ -66,21 +67,21 @@ class Character {
                 </ul>
             </section>
             <section class="container">
-                <h4>Tell me more how we are different?</h4>
+                <h4>Tell me more about how we are different?</h4>
                 <div class="row g-2">
-                    <div class="col-6"><button class="method p-3 compare-debut">Onscreen debut</button></div>
-                    <div class="col-6"><button class="method p-3 movie-list">Movielist</button></div>
-                    <div class="col-6"><button class="method p-3 home-planets">Homeplanets</button></div>
+                    <div class="col-6"><button class="method p-3 compare-debut">Movie debut</button></div>
+                    <div class="col-6"><button class="method p-3 movie-list">Filmography</button></div>
+                    <div class="col-6"><button class="method p-3 home-planets">Home planet</button></div>
                     <div class="col-6"><button class="method p-3 vehicles">Vehicle</button></div>
                 </div>
                 <p class="method-results"></p>
             </section>
         `
         // All game-play event-listeners
-        container.querySelector(".compare-debut").addEventListener("click", () => this.compareDebut())
-        container.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
-        container.querySelector(".home-planets").addEventListener("click", () =>  this.compareHomePlanet(charTwo))  
-        container.querySelector(".vehicles").addEventListener("click", () =>  this.compareVehicles())  
+        container.querySelector(".compare-debut").addEventListener("click", (e) => this.compareDebut(e))
+        container.querySelector(".movie-list").addEventListener("click", (e) => this.compareFilms(charTwo, e))
+        container.querySelector(".home-planets").addEventListener("click", (e) =>  this.compareHomePlanet(charTwo, e))  
+        container.querySelector(".vehicles").addEventListener("click", (e) =>  this.compareVehicles(e))  
 
         // onclick="${this.compareDebut()}
     }
@@ -122,27 +123,30 @@ class Character {
             }
         }
     }
-    compareDebut = async () => {
+    compareDebut = async (e) => {
         let firstMovie = await getData(chopChop(this.movies[0])) 
-        console.log(`${this.name} first appeared ${firstMovie.release_date} in ${firstMovie.title}.`);     
+        renderStr(e, `${this.name} first graced the movie screen in the film "${firstMovie.title}" released in ${firstMovie.release_date}.`)
     }
-    compareFilms = async (charTwo) => {
+    compareFilms = async (charTwo, e) => {
         let movieArr = await fetchApiUrlArr(this.movies, "title")
         let movieArr2 = await fetchApiUrlArr(charTwo.movies, "title")
-        console.log("movieArr", movieArr[0]);
-        console.log("movieArr2", movieArr2[0]);
         let sharedMovies = movieArr[0].filter((movie) => movieArr2[0].includes(movie));
-        console.log("sharedMovies", sharedMovies);
+        if(sharedMovies.length === 0) {
+            renderStr(e, `${this.name} & ${charTwo.name} have never appeared in the same movie.`)            
+        } else {
+            // console.log("sharedMovies", sharedMovies);
+            renderStr(e, `${this.name} & ${charTwo.name} have both been in ${arrayToText(sharedMovies)}.`)
+        }
     }
-    compareHomePlanet = async (charTwo) => {
+    compareHomePlanet = async (charTwo, e) => {
         let homePlanet = await getData(chopChop(this.homePlanet)) 
         let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
-        console.log("print this ", homePlanet.name);
+        renderStr(e, `${this.name} hails from the planet ${homePlanet.name}`);
         if(homePlanet.name === homePlanet2.name) {
-            console.log(`print that they have the same homeplanet, ${homePlanet.name} = ${homePlanet2.name}`);
+            renderStr(e, `Both ${this.name} & ${charTwo.name} originate from the planet of ${homePlanet.name}.`);
         }    
     }
-    compareVehicles = async() => {
+    compareVehicles = async(e) => {
         // Fetch array of vehicle prices and array of vehicle objects
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
@@ -151,24 +155,23 @@ class Character {
         console.log("vehicleArr most expensive vehicle", +getMaxValue(vehicleArr[0]));
         console.log("vehicleArr", vehicleArr[1]);
 
-        // Array consisting of the value of the most expensive starship & the value of the most expensive vehicle
+        // Array - consists of the value of the most expensive starship & the value of the most expensive vehicle
         let arrStarVeh = [+getMaxValue(starShipArr[0]), +getMaxValue(vehicleArr[0])]
         console.log("arrStarVeh", arrStarVeh);
-        // Returns value of the characters most expensive vehicle or starship
-        let max = getMaxValue(arrStarVeh)
+        // Determins and returns the value of the characters most expensive vehicle or starship
+        let max = getMaxValue(arrStarVeh);
         console.log("max", max);
         if(max == 0) {
-            console.log(`${this.name} vehicle/starship price is unknown.`);
+            renderStr(e, `${this.name} hasn't kept the recepits for any of their means of transport.`);
         } else {
             if(arrStarVeh.indexOf(max) == 0) {
                 // Returns the name of the determined most expensive starship
-                let expVehicle = mostExpVeh(starShipArr[1], max)
-                console.log(`${expVehicle} is ${this.name} most expensive starship.`);
-
+                let expStarship = mostExpVeh(starShipArr[1], max)
+                renderStr(e, `${expStarship} is ${this.name}'s most expensive starship.`);
             } else {
                 // Returns the name of the determined most expensive vehicle
                 let expVehicle = mostExpVeh(vehicleArr[1], max)
-                console.log(`${expVehicle} is ${this.name} most expensive vehicle.`);
+                renderStr(e, `${expVehicle} is ${this.name}'s most expensive vehicle.`);
             }
         }
     }
@@ -197,7 +200,7 @@ charForm.addEventListener("submit", (e) => {
             })
         })
         //todo! Brandon!!!! hur i helvääätööö funkar detta???
-        console.log("outside",charArr);
+        // console.log("outside",charArr);
     }
 })
 
@@ -285,9 +288,36 @@ let getMaxValue = (arr) => {
         return +max
     }
 }
+
 // Returns the obj.name from the passed in array which cost_in_credits matches the max-value passed in
 let mostExpVeh = (arr, max) => {
     // console.log("arr in mostExpVeh", arr);
     // console.log("max in mostExpVeh", max);
     return arr.find(obj => obj.cost_in_credits == max).name;
+}
+
+let renderStr = (event, str) => {
+    let p = event.target.parentElement.parentElement.nextElementSibling
+    p.innerText = str
+}
+// sharedMovies = ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi', 'Revenge of the Sith']
+// let movieStr = ""
+// console.log(movieStr);
+// sharedMovies.forEach((movie, index, array) => {
+//     if(index+1 === array.length) {
+//         movieStr += `& ${movie}.` ;
+//     } else {
+//         movieStr += `${movie}, ` ;
+//     }
+//     console.log(movieStr);
+// })
+// console.log(movieStr);
+
+// Source: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
+let arrayToText = (a) => {
+    if (a.length <= 2) {
+        return a.join(' and ');
+    } else {
+        return a.slice(0, -1).join(', ') + ' and ' + a[a.length-1];
+    }
 }
