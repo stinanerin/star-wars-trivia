@@ -121,7 +121,7 @@ class Character {
     }
     compareDebut = async (e) => {
         let firstMovie = await getData(chopChop(this.movies[0])) 
-        renderStr(e, `${this.name} first graced the movie screen in the film "${firstMovie.title}" released in ${firstMovie.release_date}.`)
+        renderStr(e, `${this.name} first graced the movie screen in the film "${firstMovie.title}" released ${new Date(firstMovie.release_date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}.`)
     }
     compareFilms = async (charTwo, e) => {
         let movieArr = await fetchApiUrlArr(this.movies, "title")
@@ -293,10 +293,10 @@ let renderStr = (event, str) => {
 }
 
 // Source: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
-let arrayToText = (a) => {
-    if (a.length <= 2) {
-        return a.join(' and ');
+let arrayToText = (arr) => {
+    if (arr.length <= 2) {
+        return arr.join(' and ');
     } else {
-        return a.slice(0, -1).join(', ') + ' and ' + a[a.length-1];
+        return arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length-1];
     }
 }
