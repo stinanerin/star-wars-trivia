@@ -3,6 +3,7 @@ let charForm = document.querySelector("#characterForm")
 let compareBtn = document.querySelector("#compareBtn")
 let charOneChoice = document.querySelector("#charOne")
 let charTwoChoice = document.querySelector("#charTwo")
+let loader = document.querySelector(".loader")
 let h3 = document.createElement("h3");
 let errorDiv = document.createElement("div");
 
@@ -51,6 +52,7 @@ class Character {
     }
     renderProperties(container) {
         let charTwo = charArr.find(obj => obj != this)
+        console.log(charTwo);
         container.innerHTML += `
             <section class="col my-4">
                 <ul class="list-group"> 
@@ -78,7 +80,6 @@ class Character {
         container.querySelector(".movie-list").addEventListener("click", (e) => this.compareFilms(charTwo, e))
         container.querySelector(".home-planets").addEventListener("click", (e) =>  this.compareHomePlanet(charTwo, e))  
         container.querySelector(".vehicles").addEventListener("click", (e) =>  this.compareVehicles(e))  
-
         // onclick="${this.compareDebut()}
     }
     compareCharacters(valueOne, valueTwo, charTwo, str){
@@ -137,10 +138,10 @@ class Character {
     compareHomePlanet = async (charTwo, e) => {
         let homePlanet = await getData(chopChop(this.homePlanet)) 
         let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
-        renderStr(e, `${this.name} hails from the planet ${homePlanet.name}`);
+        renderStr(e, `${this.name} hails from the planet of ${homePlanet.name}`);
         if(homePlanet.name === homePlanet2.name) {
             renderStr(e, `Both ${this.name} & ${charTwo.name} originate from the planet of ${homePlanet.name}.`);
-        }    
+        }
     }
     compareVehicles = async(e) => {
         // Fetch array of vehicle prices and array of vehicle objects
@@ -176,38 +177,33 @@ charForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     let charInputArr = [charOneChoice.value, charTwoChoice.value]
+
     // Prevents user from comparing the same characters
     if(!duplicateChar) {
-        compareBtn.classList.remove("hidden")
         charForm.classList.add("hidden")
-        
-        //todo! Brandon!!!! hur i helvääätööö funkar detta???
-        // console.log("outside but before",charArr);
-        charInputArr.forEach(char => {
-            // Creates a new instance of Character prototype for each user input and adds to global array of characters
-            loadCharacters(char).then(() => {
-                // Finds the last added character instance of the global charArr and renders it to the DOM - without mutating the original array
-                [...charArr].pop().renderCharacter()
-            })
-        })
-        //todo! Brandon!!!! hur i helvääätööö funkar detta???
-        // console.log("outside",charArr);
+        loader.classList.remove("loader-hidden")
+      
+        // Renders characters to the DOM
+        renderCharView(charInputArr)
+        .then(() => {
+            compareBtn.classList.remove("hidden")
+            loader.classList.add("loader-hidden")
+            // Removes loader element from the DOM
+            loader.ontransitionend = () => {
+                loader.remove()
+            }
+        });
     }
 })
 
 // -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
-
 let compareCharacter = () => {
-    // Targets clicked button with display:none
     event.target.classList.add("hidden")
 
     charArr.forEach(obj => {
-        
         let article = document.querySelector(`[data-character="${obj.name.toLowerCase().split(' ').join("-")}"]`)
-        
         //todo! borde kanske göra om till redan existerande html där jag togglar hidden class kom jag på nu?
         obj.renderProperties(article)
-
     })
 }
 
@@ -220,10 +216,9 @@ let loadCharacters = async (charInput) => {
         route = "people/?"
 
         let params = new URLSearchParams({
-            //todo! ta bort !== "any"
             ...(charInput != "" ? { search: charInput } : "")
         })
-        console.log(`${API_BASE_URL}${route}${params}`);
+        // console.log(`${API_BASE_URL}${route}${params}`);
         
         let charObj = await getData(route, params)
 
@@ -232,8 +227,9 @@ let loadCharacters = async (charInput) => {
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
         //todo! fixa dynamiskt namn?
         // Creates new Character instance with thee data from the character obj fetched from the API
-        let charOneProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
-        charArr.push(charOneProto)
+        let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
+        return charProto
+        // return charArr.push(charProto)
 }
 
 // -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
@@ -261,6 +257,7 @@ let chopChop =  url => {
 // Returns array of asynchronously fulfilled objects & an array of the values of passed in obj.key
 let fetchApiUrlArr = async (arr, key) => {
     let resArr = arr.map(elem => getData(chopChop(elem)));
+    //todo! settledAll + lägg in try & catch
     let dataArr = await Promise.all(resArr)
     return [dataArr.map(elem => elem[key]), dataArr]
 }
@@ -292,11 +289,29 @@ let renderStr = (event, str) => {
     p.innerText = str
 }
 
-// Source: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
+// Courtesy of: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
 let arrayToText = (arr) => {
     if (arr.length <= 2) {
         return arr.join(' and ');
     } else {
         return arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length-1];
+    }
+}
+
+//! -------------------------------------------------------- Renders the users choosen characters -----------------------------------------------------------
+let renderCharView = async (arr) => {
+    // Fetches character from API and creates a new instance of the Character prototype - returns arr of pending promises 
+    let response = arr.map((char) => loadCharacters(char))
+
+    try {
+        // Resolves response array and assign it to global character array
+        charArr = await Promise.all(response)
+        // console.log(charArr);
+        // Renders charArr
+        charArr.forEach((char) => char.renderCharacter())
+    }
+    catch (error) {
+        //todo! error?
+        console.log("Error", error);
     }
 }

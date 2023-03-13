@@ -12,6 +12,7 @@ layer(bootstrap);
 @layer special-styles {
     
     @import "./partials/variables";
+    @import "./partials/loader";
     @import "./partials/header";
     @import "./partials/main";
 
