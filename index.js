@@ -43,7 +43,7 @@ class Character {
     renderCharacter() {
         charContainer.innerHTML += `
             <article class="col-sm pb-5" data-character="${this.name.toLowerCase().split(' ').join("-")}">
-                <div class="text-center">
+                <div class="profile-card text-center ">
                     <h3>${(this.name).toLowerCase()}</h3>
                     <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
                 </div>
@@ -52,10 +52,9 @@ class Character {
     }
     renderProperties(container) {
         let charTwo = charArr.find(obj => obj != this)
-        console.log(charTwo);
         container.innerHTML += `
-            <section class="col my-4">
-                <ul class="list-group"> 
+            <section class="col-md my-4">
+                <ul class="list-group">
                     <li class="list-group-item ">${this.name}'s hair is ${(this.hairColor)}<span class="${this.compareCharacters(this.hairColor,charTwo.hairColor)}"> just like ${charTwo.name}'s hair.</span></li>
                     <li class="list-group-item ">${this.name} is ${(this.gender)}<span class="${this.compareCharacters(this.gender,charTwo.gender)}"> just like ${charTwo.name}</span></li>
                     <li class="list-group-item ">${this.name} is ${(this.height)} cm tall<span> ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}</span></li>
@@ -65,16 +64,17 @@ class Character {
                 </ul>
             </section>
             <section class="container">
-                <h4>Tell me more about how we are different?</h4>
+                <h4 class="text-center">Tell me more about how we are different?</h4>
                 <div class="row g-2">
-                    <div class="col-6"><button class="method p-3 compare-debut">Movie debut</button></div>
-                    <div class="col-6"><button class="method p-3 movie-list">Filmography</button></div>
-                    <div class="col-6"><button class="method p-3 home-planets">Home planet</button></div>
-                    <div class="col-6"><button class="method p-3 vehicles">Vehicle</button></div>
+                    <div class="col-6"><button class="h-100 method p-3 compare-debut">Movie debut</button></div>
+                    <div class="col-6"><button class="h-100 method p-3 movie-list">Filmography</button></div>
+                    <div class="col-6"><button class="h-100 method p-3 home-planets">Home planet</button></div>
+                    <div class="col-6"><button class="h-100 method p-3 vehicles">$Vehicle</button></div>
                 </div>
-                <p class="method-results"></p>
+                <p class="my-4"></p>
             </section>
-        `
+        `;
+        
         // All game-play event-listeners
         container.querySelector(".compare-debut").addEventListener("click", (e) => this.compareDebut(e))
         container.querySelector(".movie-list").addEventListener("click", (e) => this.compareFilms(charTwo, e))
@@ -121,10 +121,12 @@ class Character {
         }
     }
     compareDebut = async (e) => {
+        console.log("in compareDebut function", this.name);
         let firstMovie = await getData(chopChop(this.movies[0])) 
         renderStr(e, `${this.name} first graced the movie screen in the film "${firstMovie.title}" released ${new Date(firstMovie.release_date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}.`)
     }
     compareFilms = async (charTwo, e) => {
+        console.log("in compareFilms function", this.name);
         let movieArr = await fetchApiUrlArr(this.movies, "title")
         let movieArr2 = await fetchApiUrlArr(charTwo.movies, "title")
         let sharedMovies = movieArr[0].filter((movie) => movieArr2[0].includes(movie));
@@ -136,6 +138,8 @@ class Character {
         }
     }
     compareHomePlanet = async (charTwo, e) => {
+        console.log("in compareHomePlanet function", this.name);
+
         let homePlanet = await getData(chopChop(this.homePlanet)) 
         let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
         renderStr(e, `${this.name} hails from the planet of ${homePlanet.name}`);
@@ -144,11 +148,12 @@ class Character {
         }
     }
     compareVehicles = async(e) => {
+        console.log("in comapareVehicle function", this.name);
         // Fetch array of vehicle prices and array of vehicle objects
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
-        console.log("starship maxVal", +getMaxValue(starShipArr[0]), "starshipArr", starShipArr[1]);
-        console.log("vehicle maxVal", +getMaxValue(vehicleArr[0]), "vehicleArr", vehicleArr[1]);
+        // console.log("starship maxVal", +getMaxValue(starShipArr[0]), "starshipArr", starShipArr[1]);
+        // console.log("vehicle maxVal", +getMaxValue(vehicleArr[0]), "vehicleArr", vehicleArr[1]);
 
         // Array - consists of the value of the most expensive starship & the value of the most expensive vehicle
         let arrStarVeh = [+getMaxValue(starShipArr[0]), +getMaxValue(vehicleArr[0])]
@@ -257,8 +262,10 @@ let chopChop =  url => {
 // Returns array of asynchronously fulfilled objects & an array of the values of passed in obj.key
 let fetchApiUrlArr = async (arr, key) => {
     let resArr = arr.map(elem => getData(chopChop(elem)));
+    // console.log(resArr);
     //todo! settledAll + lägg in try & catch
     let dataArr = await Promise.all(resArr)
+    // console.log(dataArr);
     return [dataArr.map(elem => elem[key]), dataArr]
 }
 // Returns the max value of passed in array or zero if array is empty or the value is "unknown"

@@ -1,7 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css") layer(bootstrap);
 @font-face {
   font-family: jedi;
-  src: url("/assets/fonts/Starjedi.ttf");
+  src: url("../assets/fonts/Starjedi.ttf");
 }
 @layer bootstrap, special-styles;
 @layer special-styles {
@@ -14,7 +14,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+    background-color: #000;
     transition: opacity 0.75s, visibility 0.75s;
   }
   .loader-hidden {
@@ -49,10 +49,24 @@
   }
   header h1 {
     font-size: 3rem;
-  }
-  body, h1, h2, h3, h4, p {
-    margin: 0;
     color: #000;
+    letter-spacing: 0.1em;
+    -webkit-text-stroke: 2px #fff;
+  }
+  @media (width >= 576px) {
+    header h1 {
+      font-size: 5rem;
+    }
+  }
+  @media (width >= 768px) {
+    header h1 {
+      font-size: 7rem;
+    }
+  }
+  body, h1, h2, h3, h4, p, select, button, li {
+    margin: 0;
+    color: #fff;
+    background-color: #000;
   }
   .hidden {
     display: none;
@@ -70,7 +84,7 @@
     font-size: 1.25rem;
     padding: 0.5rem 1rem;
     background-color: transparent;
-    border: 1px solid #000;
+    border: 1px solid #fff;
     border-radius: 40px;
   }
   button.method, select.method {
@@ -80,13 +94,21 @@
     font-weight: 900;
   }
   i {
-    font-size: 250px;
+    font-size: 150px;
   }
-  .svg {
+  @media (width >= 768px) {
+    i {
+      font-size: 250px;
+    }
+  }
+  .profile-card div {
+    height: 100%;
+  }
+  .profile-card .svg {
     height: 150px;
   }
   @media (width >= 768px) {
-    .svg {
+    .profile-card .svg {
       height: 250px;
     }
   }

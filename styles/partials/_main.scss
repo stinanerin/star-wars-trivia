@@ -3,9 +3,10 @@
     
 // }
 
-body, h1, h2, h3, h4, p {
+body, h1, h2, h3, h4, p, select, button, li {
     margin: 0;
-    color: $p-black;
+    color: $p-white;
+    background-color: $p-black;
 }
 
 .hidden {
@@ -26,7 +27,7 @@ button, select{
     font-size: 1.25rem;
     padding: 0.5rem 1rem;
     background-color: transparent;
-    border: 1px solid $p-black;
+    border: 1px solid $p-white;
     border-radius: 40px;
     &.method {
         font-size: 0.8rem;
@@ -37,12 +38,21 @@ button, select{
 }
 
 i {
-    font-size: 250px;
+    font-size: 150px;
+        @media($md){
+            font-size: 250px;
+        }
 }
-.svg {
-    height: 150px;
-    @media($md){
-        height: 250px;
+
+.profile-card {
+    div {
+        height:100%;
+    }
+    .svg {
+        height: 150px;
+        @media($md){
+            height: 250px;
+        }
     }
 }
 
@@ -61,5 +71,5 @@ i {
         transition: background-color 5000s ease-in-out 0s;
         
     }
-
 }
+
