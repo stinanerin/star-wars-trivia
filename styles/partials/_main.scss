@@ -9,17 +9,20 @@
   box-sizing: border-box;
 }
 
+body, li {
+    background-color: $p-black;
+}
+
 body, h1, h2, h3, h4, p, select, button, li {
     margin: 0;
     color: $p-white;
-    background-color: $p-black;
 }
 
 .hidden {
     display: none;
 }
 
-h1, h2, h3, h4, select, button {
+h1, h2, h3, h4, button {
     font-family: $heading-primary ;
     line-height: 1;
     font-weight: 900;
@@ -29,7 +32,7 @@ h1, h2, h3, h4, select, button {
     }
 }
 
-button, select{
+button, select  {
     font-size: 1.25rem;
     padding: 1rem 1rem;
     background-color: transparent;
@@ -44,13 +47,15 @@ button, select{
     /* GLOW */
     position: relative;
     display: inline-block;
-    color: $neon-p;
+    color: $p-white;
     border-color: $neon-p;
     box-shadow: 
         inset 0 0 1.25em 0 $neon-p,
         0 0 1em 0 $neon-p;
+    -webkit-box-shadow:  
+        inset 0 0 1.25em 0 $neon-p,
+        0 0 1em 0 $neon-p;
     &:hover, &:focus {
-        color: $neon-s;
         text-shadow: none;
     }
     &::after {
@@ -70,19 +75,22 @@ button, select{
         opacity: 0.90;
     }
 }
-
-select:hover, select:focus, select:-webkit-autofill:focus, select:-webkit-autofill:hover {
-    cursor: pointer;
-    background-color: transparent;
-    color: $neon-p;
-    box-shadow:  
-        inset 0 0 1em 0 $neon-p,
-        0 0 3em 0.50em $neon-p;
-    -webkit-box-shadow:  
-        inset 0 0 1em 0 $neon-p,
-        0 0 3em 0.50em $neon-p;
-    opacity: 0.90;
-    transition: background-color 5000s ease-in-out 0s;
+select {
+    font-family: $body;
+    line-height: 1;
+    font-weight: 900;
+    &:hover, &:focus {
+        cursor: pointer;
+        background-color: transparent;
+        box-shadow:  
+            inset 0 0 1em 0 $neon-p,
+            0 0 3em 0.50em $neon-p;
+        -webkit-box-shadow:  
+            inset 0 0 1em 0 $neon-p,
+            0 0 3em 0.50em $neon-p;
+        opacity: 0.90;
+        transition: background-color 5000s ease-in-out 0s;
+    }
 }
 
 
@@ -105,7 +113,7 @@ i {
     }
 }
 
-.error, .error:-webkit-autofill {
+.error {
     border-color: $danger-500;
     color: $danger-500;
     -webkit-text-fill-color: $danger-500;
@@ -116,7 +124,7 @@ i {
         inset 0 0 1.25em 0 $danger-500,
         0 0 1em 0 $danger-500;
     transition: background-color 5000s ease-in-out 0s;
-    &:hover, &:focus, &:-webkit-autofill:focus, &:-webkit-autofill:hover {
+    &:hover, &:focus {
         box-shadow:  
             inset 0 0 1em 0 $danger-500,
             0 0 3em 0.50em $danger-500;

@@ -44,7 +44,7 @@ class Character {
     }
     renderCharacter() {
         let article = document.createElement("article")
-        article.classList.add("col-sm", "pb-5")
+        article.classList.add("col-sm-6", "pb-5")
         article.innerHTML += `
                 <div class="profile-card text-center ">
                     <h3>${(this.name).toLowerCase()}</h3>
@@ -86,8 +86,8 @@ class Character {
                 </ul>
             </section>
             <section class="container">
-                <h4 class="text-center">Want to find out more?</h4>
-                <div class="row g-2">
+                <h4 class="text-center p-1">Want to find out more?</h4>
+                <div class="row g-2 p-4">
                     <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
                     <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
                 </div>

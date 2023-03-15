@@ -10,6 +10,7 @@
     align-items: center;
     background-color: $p-black;
     transition: opacity 0.75s, visibility 0.75s;
+    z-index: 1;
 }
 
 .loader-hidden {
@@ -21,8 +22,14 @@
     content: "";
     width: 75px;
     height: 75px;
-    border: 15px solid #dddddd;
-    border-top-color: $accent;
+    border: 15px solid $glow;
+    border-top-color: $neon-p;
+    box-shadow: 
+        inset 0 0 0.8em 0 $glow,
+        0 0 2em 0 $glow;
+    -webkit-box-shadow:  
+        inset 0 0 0.8em 0 $glow,
+        0 0 2em 0 $glow;
     border-radius: 50%;
     animation: loading 0.75s ease infinite;
 }

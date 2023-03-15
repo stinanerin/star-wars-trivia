@@ -16,6 +16,7 @@
     align-items: center;
     background-color: hsl(0deg, 0%, 0%);
     transition: opacity 0.75s, visibility 0.75s;
+    z-index: 1;
   }
   .loader-hidden {
     opacity: 0;
@@ -25,8 +26,10 @@
     content: "";
     width: 75px;
     height: 75px;
-    border: 15px solid #dddddd;
-    border-top-color: hsl(193deg, 83%, 55%);
+    border: 15px solid hsl(0deg, 0%, 87%);
+    border-top-color: hsl(287deg, 89%, 67%);
+    box-shadow: inset 0 0 0.8em 0 hsl(0deg, 0%, 87%), 0 0 2em 0 hsl(0deg, 0%, 87%);
+    -webkit-box-shadow: inset 0 0 0.8em 0 hsl(0deg, 0%, 87%), 0 0 2em 0 hsl(0deg, 0%, 87%);
     border-radius: 50%;
     -webkit-animation: loading 0.75s ease infinite;
             animation: loading 0.75s ease infinite;
@@ -47,20 +50,60 @@
       transform: rotate(1turn);
     }
   }
-  header h1 {
+  .header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .header .text-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+  }
+  .header .text-wrapper h1 {
     font-size: 3rem;
-    color: hsl(0deg, 0%, 0%);
     letter-spacing: 0.1em;
     -webkit-text-stroke: 2px hsl(0deg, 0%, 100%);
   }
   @media (width >= 576px) {
-    header h1 {
+    .header .text-wrapper h1 {
       font-size: 5rem;
     }
   }
   @media (width >= 768px) {
-    header h1 {
+    .header .text-wrapper h1 {
       font-size: 7rem;
+    }
+  }
+  .header .globe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    z-index: -1;
+    box-shadow: inset 0 0 50px hsl(0deg, 0%, 100%), inset 20px 0 80px hsl(300deg, 100%, 50%), inset -20px 0 80px hsl(180deg, 100%, 50%), inset 20px 0 300px hsl(300deg, 100%, 50%), inset -20px 0 300px hsl(180deg, 100%, 50%), 0 0 50px hsl(0deg, 0%, 100%), -10px 0 80px hsl(300deg, 100%, 50%), 10px 0 80px hsl(180deg, 100%, 50%);
+  }
+  @media (width >= 576px) {
+    .header .globe {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  @media (width >= 768px) {
+    .header .globe {
+      font-size: 7rem;
+    }
+  }
+  @media (width >= 576px) {
+    .header {
+      min-height: 450px;
     }
   }
   *,
@@ -68,21 +111,23 @@
 *::after {
     box-sizing: border-box;
   }
+  body, li {
+    background-color: hsl(0deg, 0%, 0%);
+  }
   body, h1, h2, h3, h4, p, select, button, li {
     margin: 0;
     color: hsl(0deg, 0%, 100%);
-    background-color: hsl(0deg, 0%, 0%);
   }
   .hidden {
     display: none;
   }
-  h1, h2, h3, h4, select, button {
+  h1, h2, h3, h4, button {
     font-family: jedi, serif;
     line-height: 1;
     font-weight: 900;
     letter-spacing: 0.1em;
   }
-  h1:not(h1, select, button), h2:not(h1, select, button), h3:not(h1, select, button), h4:not(h1, select, button), select:not(h1, select, button), button:not(h1, select, button) {
+  h1:not(h1, select, button), h2:not(h1, select, button), h3:not(h1, select, button), h4:not(h1, select, button), button:not(h1, select, button) {
     padding-bottom: 1em;
   }
   button, select {
@@ -94,9 +139,10 @@
     /* GLOW */
     position: relative;
     display: inline-block;
-    color: hsl(193deg, 83%, 55%);
-    border-color: hsl(193deg, 83%, 55%);
-    box-shadow: inset 0 0 1.25em 0 hsl(193deg, 83%, 55%), 0 0 1em 0 hsl(193deg, 83%, 55%);
+    color: hsl(0deg, 0%, 100%);
+    border-color: hsl(287deg, 89%, 67%);
+    box-shadow: inset 0 0 1.25em 0 hsl(287deg, 89%, 67%), 0 0 1em 0 hsl(287deg, 89%, 67%);
+    -webkit-box-shadow: inset 0 0 1.25em 0 hsl(287deg, 89%, 67%), 0 0 1em 0 hsl(287deg, 89%, 67%);
   }
   button.method, select.method {
     font-size: 0.8rem;
@@ -105,7 +151,6 @@
     font-weight: 900;
   }
   button:hover, button:focus, select:hover, select:focus {
-    color: rgb(60, 47, 56);
     text-shadow: none;
   }
   button::after, select::after {
@@ -115,23 +160,26 @@
     bottom: 0;
     left: 0;
     right: 0;
-    box-shadow: 0 0 2em 0.5em hsl(193deg, 83%, 55%);
+    box-shadow: 0 0 2em 0.5em hsl(287deg, 89%, 67%);
     opacity: 0;
     transition: opacity 100ms linear;
-    background-color: hsl(193deg, 83%, 55%);
+    background-color: hsl(287deg, 89%, 67%);
     z-index: -1;
   }
   button:hover::after, button:focus::after, button:hover::before, button:focus::before, select:hover::after, select:focus::after, select:hover::before, select:focus::before {
     opacity: 0.9;
   }
-  select:hover, select:focus, select:-webkit-autofill:focus, select:-webkit-autofill:hover {
+  select {
+    font-family: system-ui;
+    line-height: 1;
+    font-weight: 900;
+  }
+  select:hover, select:focus {
     cursor: pointer;
     background-color: transparent;
-    color: hsl(193deg, 83%, 55%);
-    box-shadow: inset 0 0 1em 0 hsl(193deg, 83%, 55%), 0 0 3em 0.5em hsl(193deg, 83%, 55%);
-    -webkit-box-shadow: inset 0 0 1em 0 hsl(193deg, 83%, 55%), 0 0 3em 0.5em hsl(193deg, 83%, 55%);
+    box-shadow: inset 0 0 1em 0 hsl(287deg, 89%, 67%), 0 0 3em 0.5em hsl(287deg, 89%, 67%);
+    -webkit-box-shadow: inset 0 0 1em 0 hsl(287deg, 89%, 67%), 0 0 3em 0.5em hsl(287deg, 89%, 67%);
     opacity: 0.9;
-    -webkit-transition: background-color 5000s ease-in-out 0s;
     transition: background-color 5000s ease-in-out 0s;
   }
   i {
@@ -153,16 +201,15 @@
       height: 250px;
     }
   }
-  .error, .error:-webkit-autofill {
+  .error {
     border-color: hsl(354deg, 100%, 51%);
     color: hsl(354deg, 100%, 51%);
     -webkit-text-fill-color: hsl(354deg, 100%, 51%);
     box-shadow: inset 0 0 1.25em 0 hsl(354deg, 100%, 51%), 0 0 1em 0 hsl(354deg, 100%, 51%);
     -webkit-box-shadow: inset 0 0 1.25em 0 hsl(354deg, 100%, 51%), 0 0 1em 0 hsl(354deg, 100%, 51%);
-    -webkit-transition: background-color 5000s ease-in-out 0s;
     transition: background-color 5000s ease-in-out 0s;
   }
-  .error:hover, .error:focus, .error:-webkit-autofill:focus, .error:-webkit-autofill:hover, .error:-webkit-autofill:hover, .error:-webkit-autofill:focus, .error:-webkit-autofill:-webkit-autofill:focus, .error:-webkit-autofill:-webkit-autofill:hover {
+  .error:hover, .error:focus {
     box-shadow: inset 0 0 1em 0 hsl(354deg, 100%, 51%), 0 0 3em 0.5em hsl(354deg, 100%, 51%);
     -webkit-box-shadow: inset 0 0 1em 0 hsl(354deg, 100%, 51%), 0 0 3em 0.5em hsl(354deg, 100%, 51%);
     opacity: 0.9;
