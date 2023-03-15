@@ -71,18 +71,18 @@
   .hidden {
     display: none;
   }
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, select, button {
     font-family: jedi, serif;
     line-height: 1;
     font-weight: 900;
+    letter-spacing: 0.1em;
   }
-  h1:not(h1), h2:not(h1), h3:not(h1), h4:not(h1) {
+  h1:not(h1, select, button), h2:not(h1, select, button), h3:not(h1, select, button), h4:not(h1, select, button), select:not(h1, select, button), button:not(h1, select, button) {
     padding-bottom: 1em;
   }
   button, select {
-    font-family: jedi, serif;
     font-size: 1.25rem;
-    padding: 0.5rem 1rem;
+    padding: 1rem 1rem;
     background-color: transparent;
     border: 1px solid #fff;
     border-radius: 40px;
@@ -127,5 +127,8 @@
     -webkit-box-shadow: 0 0 0px 1000px hsl(355deg, 70%, 91%) inset;
     -webkit-transition: background-color 5000s ease-in-out 0s;
     transition: background-color 5000s ease-in-out 0s;
+  }
+  li span {
+    font-weight: 900;
   }
 }/*# sourceMappingURL=style.css.map */

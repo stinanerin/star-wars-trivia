@@ -1,5 +1,7 @@
 let charContainer = document.querySelector("#compareCharacter")
 let charForm = document.querySelector("#characterForm")
+let main = document.querySelector("main")
+let comparisonWrapper = document.querySelector("#comparisonWrapper")
 let compareBtn = document.querySelector("#compareBtn")
 let charOneChoice = document.querySelector("#charOne")
 let charTwoChoice = document.querySelector("#charTwo")
@@ -19,7 +21,7 @@ let getData = async(route, params) => {
         return  await res.json();
     } catch (error) {
         compareBtn.classList.add("hidden")
-        charContainer.innerHTML= ""
+        main.innerHTML= ""
         h3.innerText = "Something went wrong.. Please try again later.";
         document.body.append(h3);
     }
@@ -28,9 +30,9 @@ let getData = async(route, params) => {
 class Character {
     constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, homePlanet, vehicles, starships, pictureUrl) {
         this.name = name;
-        this.gender = gender;
-        this.height = +height;
-        this.mass = +mass;
+        this.gender = gender == "n/a" ? "no gender" : gender;
+        this.height = +height ? +height : "unknown";
+        this.mass = +mass ? +mass : "unknown";
         this.hairColor = hairColor;
         this.skinColor = skinColor;
         this.eyeColor = eyeColor;
@@ -41,61 +43,67 @@ class Character {
         this.pictureUrl = pictureUrl + ".svg";
     }
     renderCharacter() {
-        charContainer.innerHTML += `
-            <article class="col-sm pb-5" data-character="${this.name.toLowerCase().split(' ').join("-")}">
+        let article = document.createElement("article")
+        article.classList.add("col-sm", "pb-5")
+        article.innerHTML += `
                 <div class="profile-card text-center ">
                     <h3>${(this.name).toLowerCase()}</h3>
                     <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
                 </div>
-            </article>
+                <section class="col-md ">
+                    <ul class="list-group my-4">
+                        <li class="list-group-item"><span>Hair color: </span>${(this.hairColor)}</li>
+                        <li class="list-group-item"><span>Gender: </span>${(this.gender)}</li>
+                        <li class="list-group-item"><span>Heigth: </span>${(this.height)} cm</li>
+                        <li class="list-group-item"><span>Mass: </span>${(this.mass)} kg</li>
+                        <li class="list-group-item"><span>Skin color: </span>${(this.skinColor)}</li>
+                        <li class="list-group-item"><span>Movies: </span>${(this.movies.length)}</li> 
+                    </ul>
+                    <div class="row g-2">
+                        <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
+                        <div class="col"><button class="h-100 method debut">Movie debut?</button></div>
+                    </div>
+                    <p class="my-4"><p>
+                </section>
         `
+        charContainer.append(article)
+       
+        article.querySelector(".vehicle").addEventListener("click", () => this.compareVehicles(article)) 
+        article.querySelector(".debut").addEventListener("click", () => this.filmDebut(article))
     }
-    renderProperties(container) {
+    renderProperties() {
         let charTwo = charArr.find(obj => obj != this)
-        container.innerHTML += `
+        comparisonWrapper.innerHTML += `
             <section class="col-md my-4">
+                <h4 class="text-center">Comparison</h4>
                 <ul class="list-group">
-                    <li class="list-group-item ">${this.name}'s hair is ${(this.hairColor)}<span class="${this.compareCharacters(this.hairColor,charTwo.hairColor)}"> just like ${charTwo.name}'s hair.</span></li>
-                    <li class="list-group-item ">${this.name} is ${(this.gender)}<span class="${this.compareCharacters(this.gender,charTwo.gender)}"> just like ${charTwo.name}</span></li>
-                    <li class="list-group-item ">${this.name} is ${(this.height)} cm tall<span> ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}</span></li>
-                    <li class="list-group-item ">${this.name} weighs ${this.mass} kg<span> ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")} </span></li>
-                    <li class="list-group-item ">${this.name}´s skin is ${(this.skinColor)}<span class="${this.compareCharacters(this.skinColor,charTwo.skinColor)}"> , the same as ${charTwo.name}'s skin.</span></li>
-                    <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies<span> ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")} </span></li>
+                    <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "don´t have the same"} hair color as ${charTwo.name}.</li>
+                    <li class="list-group-item">${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
+                    <li class="list-group-item">${this.name}´s skin is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same as"} as ${charTwo.name}'s skin.</li>
+                    <li class="list-group-item">${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
+                    <li class="list-group-item">${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
+                    <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
                 </ul>
             </section>
             <section class="container">
-                <h4 class="text-center">Tell me more about how we are different?</h4>
+                <h4 class="text-center">Want to find out more?</h4>
                 <div class="row g-2">
-                    <div class="col-6"><button class="h-100 method p-3 compare-debut">Movie debut</button></div>
-                    <div class="col-6"><button class="h-100 method p-3 movie-list">Filmography</button></div>
-                    <div class="col-6"><button class="h-100 method p-3 home-planets">Home planet</button></div>
-                    <div class="col-6"><button class="h-100 method p-3 vehicles">$Vehicle</button></div>
+                    <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
+                    <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
                 </div>
                 <p class="my-4"></p>
             </section>
         `;
-        
-        // All game-play event-listeners
-        container.querySelector(".compare-debut").addEventListener("click", (e) => this.compareDebut(e))
-        container.querySelector(".movie-list").addEventListener("click", (e) => this.compareFilms(charTwo, e))
-        container.querySelector(".home-planets").addEventListener("click", (e) =>  this.compareHomePlanet(charTwo, e))  
-        container.querySelector(".vehicles").addEventListener("click", (e) =>  this.compareVehicles(e))  
-        // onclick="${this.compareDebut()}
+
+        comparisonWrapper.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
+        comparisonWrapper.querySelector(".home-planets").addEventListener("click", () =>  this.compareHomePlanet(charTwo))  
     }
     compareCharacters(valueOne, valueTwo, charTwo, str){
-        if(typeof valueOne === "string") {
-            if (valueOne === valueTwo) {
-                // console.log(`${valueOne} is the same as ${valueTwo}`) 
-                return 
-            }
-            else {
-                // console.log(`${valueOne} is not the same as ${valueTwo}`)
-                return "hidden" 
-            }
+        let string;
+        if (typeof valueOne === "string") {
+            return (valueOne === valueTwo)
         } else {
-            let string;
             if (valueOne > valueTwo){
-                // console.log(`${valueOne} is bigger than ${valueTwo}`)
                 if(str === "length") {
                     string = `, compared to ${charTwo.name}'s measly ${charTwo.movies.length} movie appearances.`
                 } else if (str === "mass") {
@@ -105,10 +113,15 @@ class Character {
                 }
                 return string;
             } else if (valueOne < valueTwo) {
-                //todo! Vill jag lägga tillbaka?
-                return ""
+                if(str === "length") {
+                    string = `, and has therefore been in less movies than ${charTwo.name}`
+                } else if (str === "mass") {
+                    string = `, weighing less than ${charTwo.name}, who weighs ${charTwo.mass - this.mass} kg more`
+                }else if (str === "height") {
+                    string = `, practically a midget compared to ${charTwo.name}'s impressive ${charTwo.height} cm`
+                }
+                return string
             } else if (valueOne === valueTwo) {
-                // console.log(`${valueOne} is the same as ${valueTwo}`) 
                 if(str === "length") {
                     string = `, the same amount as ${charTwo.name}`
                 } else if (str === "mass") {
@@ -120,58 +133,48 @@ class Character {
             }
         }
     }
-    compareDebut = async (e) => {
-        console.log("in compareDebut function", this.name);
+    filmDebut = async (wrapper) => {
         let firstMovie = await getData(chopChop(this.movies[0])) 
-        renderStr(e, `${this.name} first graced the movie screen in the film "${firstMovie.title}" released ${new Date(firstMovie.release_date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}.`)
+        renderStr(`${this.name} first graced the movie screen in the film "${firstMovie.title}" released ${dateToText(firstMovie.release_date)}.`, wrapper)
     }
-    compareFilms = async (charTwo, e) => {
-        console.log("in compareFilms function", this.name);
+    compareFilms = async (charTwo) => {
         let movieArr = await fetchApiUrlArr(this.movies, "title")
         let movieArr2 = await fetchApiUrlArr(charTwo.movies, "title")
         let sharedMovies = movieArr[0].filter((movie) => movieArr2[0].includes(movie));
         if(sharedMovies.length === 0) {
-            renderStr(e, `${this.name} & ${charTwo.name} have never appeared in the same movie.`)            
+            renderStr( `${this.name} & ${charTwo.name} have never co-starred in the same movie.`)            
         } else {
-            // console.log("sharedMovies", sharedMovies);
-            renderStr(e, `${this.name} & ${charTwo.name} have both been in ${arrayToText(sharedMovies)}.`)
+            renderStr(`${this.name} & ${charTwo.name} both appeared in ${arrayToText(sharedMovies)}.`)
         }
     }
-    compareHomePlanet = async (charTwo, e) => {
-        console.log("in compareHomePlanet function", this.name);
-
+    compareHomePlanet = async (charTwo) => {
         let homePlanet = await getData(chopChop(this.homePlanet)) 
         let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
-        renderStr(e, `${this.name} hails from the planet of ${homePlanet.name}`);
         if(homePlanet.name === homePlanet2.name) {
-            renderStr(e, `Both ${this.name} & ${charTwo.name} originate from the planet of ${homePlanet.name}.`);
+            renderStr( `Both ${this.name} & ${charTwo.name} originate from the planet of ${homePlanet.name}.`);
+        } else {
+            renderStr(`${this.name} hails from the planet of ${homePlanet.name} and ${charTwo.name} originates from the planet ${homePlanet2.name}.`);
         }
     }
-    compareVehicles = async(e) => {
-        console.log("in comapareVehicle function", this.name);
+    compareVehicles = async(wrapper) => {
         // Fetch array of vehicle prices and array of vehicle objects
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
-        // console.log("starship maxVal", +getMaxValue(starShipArr[0]), "starshipArr", starShipArr[1]);
-        // console.log("vehicle maxVal", +getMaxValue(vehicleArr[0]), "vehicleArr", vehicleArr[1]);
-
         // Array - consists of the value of the most expensive starship & the value of the most expensive vehicle
         let arrStarVeh = [+getMaxValue(starShipArr[0]), +getMaxValue(vehicleArr[0])]
-        // console.log("arrStarVeh", arrStarVeh);
         // Determins and returns the value of the characters most expensive vehicle or starship
         let max = getMaxValue(arrStarVeh);
-        // console.log("max", max);
         if(max == 0) {
-            renderStr(e, `${this.name} hasn't kept the recepits for any of their means of transport.`);
+            renderStr(`${this.name} hasn't kept the recepits for any of their means of transport.`, wrapper);
         } else {
             if(arrStarVeh.indexOf(max) == 0) {
                 // Returns the name of the determined most expensive starship
                 let expStarship = mostExpVeh(starShipArr[1], max)
-                renderStr(e, `${expStarship} is ${this.name}'s most expensive starship.`);
+                renderStr(`${expStarship} is ${this.name}'s most expensive starship.`, wrapper);
             } else {
                 // Returns the name of the determined most expensive vehicle
                 let expVehicle = mostExpVeh(vehicleArr[1], max)
-                renderStr(e, `${expVehicle} is ${this.name}'s most expensive vehicle.`);
+                renderStr(`${expVehicle} is ${this.name}'s most expensive vehicle.`, wrapper);
             }
         }
     }
@@ -202,15 +205,11 @@ charForm.addEventListener("submit", (e) => {
 })
 
 // -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
-let compareCharacter = () => {
-    event.target.classList.add("hidden")
 
-    charArr.forEach(obj => {
-        let article = document.querySelector(`[data-character="${obj.name.toLowerCase().split(' ').join("-")}"]`)
-        //todo! borde kanske göra om till redan existerande html där jag togglar hidden class kom jag på nu?
-        obj.renderProperties(article)
-    })
-}
+compareBtn.addEventListener("click", () => {
+    event.target.classList.add("hidden")
+    charArr[0].renderProperties()
+})
 
 // -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
 let loadCharacters = async (charInput) => {
@@ -234,7 +233,6 @@ let loadCharacters = async (charInput) => {
         // Creates new Character instance with thee data from the character obj fetched from the API
         let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
         return charProto
-        // return charArr.push(charProto)
 }
 
 // -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
@@ -291,9 +289,14 @@ let mostExpVeh = (arr, max) => {
     return arr.find(obj => obj.cost_in_credits == max).name;
 }
 
-let renderStr = (event, str) => {
-    let p = event.target.parentElement.parentElement.nextElementSibling
-    p.innerText = str
+let renderStr = (str, wrapper) => {
+    if(wrapper) {
+        let p = wrapper.querySelector("p")
+        p.innerText = str
+    } else {
+        let p = comparisonWrapper.querySelector("p")
+        p.innerText = str
+    }
 }
 
 // Courtesy of: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
@@ -305,7 +308,7 @@ let arrayToText = (arr) => {
     }
 }
 
-//! -------------------------------------------------------- Renders the users choosen characters -----------------------------------------------------------
+// -------------------------------------------------------- Renders the users choosen characters -----------------------------------------------------------
 let renderCharView = async (arr) => {
     // Fetches character from API and creates a new instance of the Character prototype - returns arr of pending promises 
     let response = arr.map((char) => loadCharacters(char))
@@ -316,9 +319,14 @@ let renderCharView = async (arr) => {
         // console.log(charArr);
         // Renders charArr
         charArr.forEach((char) => char.renderCharacter())
+        console.log(charArr);
     }
     catch (error) {
         //todo! error?
         console.log("Error", error);
     }
+}
+
+let dateToText = (date) => {
+    return new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})
 }
