@@ -46,7 +46,6 @@ button, select  {
     }
     /* GLOW */
     position: relative;
-    display: inline-block;
     color: $p-white;
     border-color: $neon-p;
     box-shadow: 
@@ -55,9 +54,6 @@ button, select  {
     -webkit-box-shadow:  
         inset 0 0 1.25em 0 $neon-p,
         0 0 1em 0 $neon-p;
-    &:hover, &:focus {
-        text-shadow: none;
-    }
     &::after {
         content: "";
         position: absolute;
@@ -140,4 +136,4 @@ li {
     span {
         font-weight: 900;
     }
-}
+}  

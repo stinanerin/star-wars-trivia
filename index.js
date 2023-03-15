@@ -63,7 +63,7 @@ class Character {
                         <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
                         <div class="col"><button class="h-100 method debut">Movie debut?</button></div>
                     </div>
-                    <p class="my-4"><p>
+                    <p class="mt-4"><p>
                 </section>
         `
         charContainer.append(article)
@@ -71,10 +71,10 @@ class Character {
         article.querySelector(".vehicle").addEventListener("click", () => this.compareVehicles(article)) 
         article.querySelector(".debut").addEventListener("click", () => this.filmDebut(article))
     }
-    renderProperties() {
+    renderComparison() {
         let charTwo = charArr.find(obj => obj != this)
         comparisonWrapper.innerHTML += `
-            <section class="col-md my-4">
+            <section class="col-md mb-4">
                 <h4 class="text-center">Comparison</h4>
                 <ul class="list-group">
                     <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
@@ -91,7 +91,7 @@ class Character {
                     <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
                     <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
                 </div>
-                <p class="my-4"></p>
+                <p class="mt-4"></p>
             </section>
         `;
 
@@ -157,7 +157,7 @@ class Character {
         }
     }
     compareVehicles = async(wrapper) => {
-        // Fetch array of vehicle prices and array of vehicle objects
+        // Fetches array of [vehicle prices, vehicle objects]
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
         // Array - consists of the value of the most expensive starship & the value of the most expensive vehicle
@@ -165,17 +165,18 @@ class Character {
         // Determins and returns the value of the characters most expensive vehicle or starship
         let max = getMaxValue(arrStarVeh);
         if(max == 0) {
-            renderStr(`${this.name} hasn't kept the recepits for any of their means of transport.`, wrapper);
+            renderStr(`${this.name} hasn't kept the receipts for any of their means of transport.`, wrapper);
         } else {
             if(arrStarVeh.indexOf(max) == 0) {
                 // Returns the name of the determined most expensive starship
                 let expStarship = mostExpVeh(starShipArr[1], max)
-                renderStr(`${expStarship} is ${this.name}'s most expensive starship.`, wrapper);
+                let str = `${expStarship.name} is ${this.name}'s most expensive starship, costing an astounding ${expStarship.cost_in_credits} galactic credits.`
             } else {
                 // Returns the name of the determined most expensive vehicle
                 let expVehicle = mostExpVeh(vehicleArr[1], max)
-                renderStr(`${expVehicle} is ${this.name}'s most expensive vehicle.`, wrapper);
+                let str = `${expVehicle.name} is ${this.name}'s most expensive vehicle, costing an astounding ${expVehicle.cost_in_credits} galactic credits.`
             }
+            renderStr(str, wrapper);
         }
     }
 }
@@ -208,7 +209,7 @@ charForm.addEventListener("submit", (e) => {
 
 compareBtn.addEventListener("click", () => {
     event.target.classList.add("hidden")
-    charArr[0].renderProperties()
+    charArr[0].renderComparison()
 })
 
 // -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
@@ -222,14 +223,13 @@ let loadCharacters = async (charInput) => {
         let params = new URLSearchParams({
             ...(charInput != "" ? { search: charInput } : "")
         })
-        // console.log(`${API_BASE_URL}${route}${params}`);
         
         let charObj = await getData(route, params)
 
         //todo! bryt ut denna bit?
         // Destructuring the character object fetched from API
         let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
-        //todo! fixa dynamiskt namn?
+        
         // Creates new Character instance with thee data from the character obj fetched from the API
         let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
         return charProto
@@ -243,7 +243,6 @@ charForm.addEventListener('change', (e) => {
     errorDiv.innerText = ""
 
     if(charOneChoice.value === charTwoChoice.value) {
-        // console.log("you have choosen the same character dummy");
         duplicateChar = true;
 
         errorDiv.innerText = "It is more fun if you don't compare the same character:)"
@@ -260,33 +259,26 @@ let chopChop =  url => {
 // Returns array of asynchronously fulfilled objects & an array of the values of passed in obj.key
 let fetchApiUrlArr = async (arr, key) => {
     let resArr = arr.map(elem => getData(chopChop(elem)));
-    // console.log(resArr);
     //todo! settledAll + lägg in try & catch
     let dataArr = await Promise.all(resArr)
-    // console.log(dataArr);
     return [dataArr.map(elem => elem[key]), dataArr]
 }
 // Returns the max value of passed in array or zero if array is empty or the value is "unknown"
 let getMaxValue = (arr) => {
-    // console.log("arr inside getMax before reduce", arr);
     if(arr.length == 0) {
-        // console.log("empty arr");
         return 0
     } else {
         let max = arr.reduce((a, b) => Math.max(a, b));
         if(max == "unknown") {
             max = 0
         } 
-        // console.log("max in get maxVal", +max);
         return +max
     }
 }
 
 // Returns the obj.name from the passed in array which cost_in_credits matches the max-value passed in
 let mostExpVeh = (arr, max) => {
-    // console.log("arr in mostExpVeh", arr);
-    // console.log("max in mostExpVeh", max);
-    return arr.find(obj => obj.cost_in_credits == max).name;
+    return arr.find(obj => obj.cost_in_credits == max);
 }
 
 let renderStr = (str, wrapper) => {
@@ -316,10 +308,8 @@ let renderCharView = async (arr) => {
     try {
         // Resolves response array and assign it to global character array
         charArr = await Promise.all(response)
-        // console.log(charArr);
         // Renders charArr
         charArr.forEach((char) => char.renderCharacter())
-        console.log(charArr);
     }
     catch (error) {
         //todo! error?
