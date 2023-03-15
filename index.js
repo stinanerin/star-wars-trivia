@@ -1,29 +1,32 @@
-let charContainer = document.querySelector("#compareCharacter")
-let charForm = document.querySelector("#characterForm")
-let main = document.querySelector("main")
-let comparisonWrapper = document.querySelector("#comparisonWrapper")
-let compareBtn = document.querySelector("#compareBtn")
-let charOneChoice = document.querySelector("#charOne")
-let charTwoChoice = document.querySelector("#charTwo")
-let loader = document.querySelector(".loader")
-let h3 = document.createElement("h3");
-let errorDiv = document.createElement("div");
+const charContainer = document.querySelector("#compareCharacter")
+const charForm = document.querySelector("#characterForm")
+const main = document.querySelector("main")
+const comparisonWrapper = document.querySelector("#comparisonWrapper")
+const compareBtn = document.querySelector("#compareBtn")
+const charOneChoice = document.querySelector("#charOne")
+const charTwoChoice = document.querySelector("#charTwo")
+const loader = document.querySelector(".loader")
+const h3 = document.createElement("h3");
+const errorDiv = document.createElement("div");
 
 let charArr = []
 let duplicateChar;
+const restartBtn = document.createElement("button")
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
-let API_BASE_URL = "https://swapi.dev/api/"
+const API_BASE_URL = "https://swapi.dev/api/"
 
-let getData = async(route, params) => {
+const getData = async(route, params) => {
     try {
         let res = await fetch(`${API_BASE_URL}${route}${params ? params : ""}`)
         return  await res.json();
     } catch (error) {
         compareBtn.classList.add("hidden")
         main.innerHTML= ""
-        h3.innerText = "Something went wrong.. Please try again later.";
-        document.body.append(h3);
+        main.classList.add("text-center")
+        h3.innerText = "Something went wrong..";
+        restartBtn.innerText = "Try again"
+        main.append(h3, restartBtn);
     }
 }
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
@@ -87,7 +90,7 @@ class Character {
             </section>
             <section class="container">
                 <h4 class="text-center p-1">Want to find out more?</h4>
-                <div class="row g-2 p-4">
+                <div class="row g-2 pt-4">
                     <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
                     <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
                 </div>
@@ -118,7 +121,7 @@ class Character {
                 } else if (str === "mass") {
                     string = `, weighing less than ${charTwo.name}, who weighs ${charTwo.mass - this.mass} kg more`
                 }else if (str === "height") {
-                    string = `, practically a midget compared to ${charTwo.name}'s impressive ${charTwo.height} cm`
+                    string = `, practically a gnome compared to ${charTwo.name}'s impressive ${charTwo.height} cm`
                 }
                 return string
             } else if (valueOne === valueTwo) {
@@ -170,13 +173,12 @@ class Character {
             if(arrStarVeh.indexOf(max) == 0) {
                 // Returns the name of the determined most expensive starship
                 let expStarship = mostExpVeh(starShipArr[1], max)
-                let str = `${expStarship.name} is ${this.name}'s most expensive starship, costing an astounding ${expStarship.cost_in_credits} galactic credits.`
+                renderStr(`${expStarship.name} is ${this.name}'s most expensive starship, costing an astounding ${expStarship.cost_in_credits} galactic credits.`, wrapper)
             } else {
                 // Returns the name of the determined most expensive vehicle
                 let expVehicle = mostExpVeh(vehicleArr[1], max)
-                let str = `${expVehicle.name} is ${this.name}'s most expensive vehicle, costing an astounding ${expVehicle.cost_in_credits} galactic credits.`
+                renderStr(`${expVehicle.name} is ${this.name}'s most expensive vehicle, costing an astounding ${expVehicle.cost_in_credits} galactic credits.`, wrapper)
             }
-            renderStr(str, wrapper);
         }
     }
 }
@@ -320,3 +322,8 @@ let renderCharView = async (arr) => {
 let dateToText = (date) => {
     return new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})
 }
+
+
+restartBtn.addEventListener("click", () => {
+    location.reload();
+})
