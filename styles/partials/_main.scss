@@ -1,6 +1,5 @@
 // * {
-//     outline: 1px solid pink;
-    
+//     outline: 1px solid pink;  
 // }
 
 *,
@@ -64,7 +63,6 @@ button, select  {
         box-shadow: 0 0 2em 0.5em $neon-p;
         opacity: 0;
         transition: opacity 100ms linear;
-        background-color: $neon-p;
         z-index: -1;
     }
     &:hover::after,  &:focus::after, &:hover::before, &:focus::before {
@@ -88,7 +86,6 @@ select {
         transition: background-color 5000s ease-in-out 0s;
     }
 }
-
 
 i {
     font-size: 150px;

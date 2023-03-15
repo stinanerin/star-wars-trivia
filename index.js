@@ -8,10 +8,10 @@ const charTwoChoice = document.querySelector("#charTwo")
 const loader = document.querySelector(".loader")
 const h3 = document.createElement("h3");
 const errorDiv = document.createElement("div");
+const restartBtn = document.createElement("button")
 
 let charArr = []
 let duplicateChar;
-const restartBtn = document.createElement("button")
 
 // -------------------------------------------------------- Set up: API -----------------------------------------------------------
 const API_BASE_URL = "https://swapi.dev/api/"
@@ -137,10 +137,12 @@ class Character {
         }
     }
     filmDebut = async (wrapper) => {
+        renderStr(`Loading...`, wrapper)
         let firstMovie = await getData(chopChop(this.movies[0])) 
         renderStr(`${this.name} first graced the movie screen in the film "${firstMovie.title}" released ${dateToText(firstMovie.release_date)}.`, wrapper)
     }
     compareFilms = async (charTwo) => {
+        renderStr(`Loading...`)
         let movieArr = await fetchApiUrlArr(this.movies, "title")
         let movieArr2 = await fetchApiUrlArr(charTwo.movies, "title")
         let sharedMovies = movieArr[0].filter((movie) => movieArr2[0].includes(movie));
@@ -151,6 +153,7 @@ class Character {
         }
     }
     compareHomePlanet = async (charTwo) => {
+        renderStr(`Loading...`)
         let homePlanet = await getData(chopChop(this.homePlanet)) 
         let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
         if(homePlanet.name === homePlanet2.name) {
@@ -160,6 +163,7 @@ class Character {
         }
     }
     compareVehicles = async(wrapper) => {
+        renderStr(`Loading...`, wrapper)
         // Fetches array of [vehicle prices, vehicle objects]
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
@@ -188,12 +192,10 @@ charForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     let charInputArr = [charOneChoice.value, charTwoChoice.value]
-
     // Prevents user from comparing the same characters
     if(!duplicateChar) {
         charForm.classList.add("hidden")
         loader.classList.remove("loader-hidden")
-      
         // Renders characters to the DOM
         renderCharView(charInputArr)
         .then(() => {
@@ -208,7 +210,6 @@ charForm.addEventListener("submit", (e) => {
 })
 
 // -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
-
 compareBtn.addEventListener("click", () => {
     event.target.classList.add("hidden")
     charArr[0].renderComparison()
@@ -219,22 +220,22 @@ let loadCharacters = async (charInput) => {
     //todo! error hantering - om karaktären ej finns
     //todo! dubbelkolla båda om första och andra ej existerar
     //todo! error hantering - om anv. ej valt två karaktärer - 
-    // try {
-        route = "people/?"
+    
+    route = "people/?"
 
-        let params = new URLSearchParams({
-            ...(charInput != "" ? { search: charInput } : "")
-        })
-        
-        let charObj = await getData(route, params)
+    let params = new URLSearchParams({
+        ...(charInput != "" ? { search: charInput } : "")
+    })
+    
+    let charObj = await getData(route, params)
 
-        //todo! bryt ut denna bit?
-        // Destructuring the character object fetched from API
-        let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
-        
-        // Creates new Character instance with thee data from the character obj fetched from the API
-        let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
-        return charProto
+    //todo! bryt ut denna bit?
+    // Destructuring the character object fetched from API
+    let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
+    
+    // Creates new Character instance with thee data from the character obj fetched from the API
+    let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
+    return charProto
 }
 
 // -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
@@ -253,6 +254,7 @@ charForm.addEventListener('change', (e) => {
         charTwoChoice.classList.add("error")
     }
 });
+
 // Returns incoming url:s unique route
 let chopChop =  url => {
     const [first, last] = url.split("api/");
@@ -278,7 +280,7 @@ let getMaxValue = (arr) => {
     }
 }
 
-// Returns the obj.name from the passed in array which cost_in_credits matches the max-value passed in
+// Returns the obj from the passed in array which cost_in_credits matches the max-value passed in
 let mostExpVeh = (arr, max) => {
     return arr.find(obj => obj.cost_in_credits == max);
 }
@@ -323,7 +325,7 @@ let dateToText = (date) => {
     return new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})
 }
 
-
+// -------------------------------------------------------- Reload page when fetch throws error -----------------------------------------------------------
 restartBtn.addEventListener("click", () => {
     location.reload();
 })

@@ -159,7 +159,6 @@
     box-shadow: 0 0 2em 0.5em hsl(287deg, 89%, 67%);
     opacity: 0;
     transition: opacity 100ms linear;
-    background-color: hsl(287deg, 89%, 67%);
     z-index: -1;
   }
   button:hover::after, button:focus::after, button:hover::before, button:focus::before, select:hover::after, select:focus::after, select:hover::before, select:focus::before {
