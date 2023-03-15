@@ -77,9 +77,9 @@ class Character {
             <section class="col-md my-4">
                 <h4 class="text-center">Comparison</h4>
                 <ul class="list-group">
-                    <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "don´t have the same"} hair color as ${charTwo.name}.</li>
+                    <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
                     <li class="list-group-item">${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
-                    <li class="list-group-item">${this.name}´s skin is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same as"} as ${charTwo.name}'s skin.</li>
+                    <li class="list-group-item">${this.name}´s skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same"} as ${charTwo.name}'s skin color.</li>
                     <li class="list-group-item">${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
                     <li class="list-group-item">${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
                     <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>

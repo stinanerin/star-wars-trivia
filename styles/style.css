@@ -14,7 +14,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #000;
+    background-color: hsl(0deg, 0%, 0%);
     transition: opacity 0.75s, visibility 0.75s;
   }
   .loader-hidden {
@@ -26,7 +26,7 @@
     width: 75px;
     height: 75px;
     border: 15px solid #dddddd;
-    border-top-color: #2dc3ec;
+    border-top-color: hsl(193deg, 83%, 55%);
     border-radius: 50%;
     -webkit-animation: loading 0.75s ease infinite;
             animation: loading 0.75s ease infinite;
@@ -49,9 +49,9 @@
   }
   header h1 {
     font-size: 3rem;
-    color: #000;
+    color: hsl(0deg, 0%, 0%);
     letter-spacing: 0.1em;
-    -webkit-text-stroke: 2px #fff;
+    -webkit-text-stroke: 2px hsl(0deg, 0%, 100%);
   }
   @media (width >= 576px) {
     header h1 {
@@ -63,10 +63,15 @@
       font-size: 7rem;
     }
   }
+  *,
+*::before,
+*::after {
+    box-sizing: border-box;
+  }
   body, h1, h2, h3, h4, p, select, button, li {
     margin: 0;
-    color: #fff;
-    background-color: #000;
+    color: hsl(0deg, 0%, 100%);
+    background-color: hsl(0deg, 0%, 0%);
   }
   .hidden {
     display: none;
@@ -84,14 +89,50 @@
     font-size: 1.25rem;
     padding: 1rem 1rem;
     background-color: transparent;
-    border: 1px solid #fff;
-    border-radius: 40px;
+    border: 0.125em solid hsl(0deg, 0%, 100%);
+    border-radius: 0.5em;
+    /* GLOW */
+    position: relative;
+    display: inline-block;
+    color: hsl(193deg, 83%, 55%);
+    border-color: hsl(193deg, 83%, 55%);
+    box-shadow: inset 0 0 1.25em 0 hsl(193deg, 83%, 55%), 0 0 1em 0 hsl(193deg, 83%, 55%);
   }
   button.method, select.method {
     font-size: 0.8rem;
     font-family: system-ui;
     width: 100%;
     font-weight: 900;
+  }
+  button:hover, button:focus, select:hover, select:focus {
+    color: rgb(60, 47, 56);
+    text-shadow: none;
+  }
+  button::after, select::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 2em 0.5em hsl(193deg, 83%, 55%);
+    opacity: 0;
+    transition: opacity 100ms linear;
+    background-color: hsl(193deg, 83%, 55%);
+    z-index: -1;
+  }
+  button:hover::after, button:focus::after, button:hover::before, button:focus::before, select:hover::after, select:focus::after, select:hover::before, select:focus::before {
+    opacity: 0.9;
+  }
+  select:hover, select:focus, select:-webkit-autofill:focus, select:-webkit-autofill:hover {
+    cursor: pointer;
+    background-color: transparent;
+    color: hsl(193deg, 83%, 55%);
+    box-shadow: inset 0 0 1em 0 hsl(193deg, 83%, 55%), 0 0 3em 0.5em hsl(193deg, 83%, 55%);
+    -webkit-box-shadow: inset 0 0 1em 0 hsl(193deg, 83%, 55%), 0 0 3em 0.5em hsl(193deg, 83%, 55%);
+    opacity: 0.9;
+    -webkit-transition: background-color 5000s ease-in-out 0s;
+    transition: background-color 5000s ease-in-out 0s;
   }
   i {
     font-size: 150px;
@@ -112,21 +153,20 @@
       height: 250px;
     }
   }
-  .error {
-    color: hsl(354deg, 62%, 43%);
-    border-color: hsl(354deg, 62%, 43%);
-    -webkit-text-fill-color: hsl(354deg, 62%, 43%);
-    box-shadow: 0 0 0px 1000px hsl(354deg, 62%, 43%) inset;
-    -webkit-box-shadow: 0 0 0px 1000px hsl(355deg, 70%, 91%) inset;
-    transition: background-color 5000s ease-in-out 0s;
-  }
-  .error:-webkit-autofill, .error:-webkit-autofill:focus {
-    border-color: hsl(354deg, 62%, 43%);
-    -webkit-text-fill-color: hsl(354deg, 62%, 43%);
-    box-shadow: 0 0 0px 1000px hsl(354deg, 62%, 43%) inset;
-    -webkit-box-shadow: 0 0 0px 1000px hsl(355deg, 70%, 91%) inset;
+  .error, .error:-webkit-autofill {
+    border-color: hsl(354deg, 100%, 51%);
+    color: hsl(354deg, 100%, 51%);
+    -webkit-text-fill-color: hsl(354deg, 100%, 51%);
+    box-shadow: inset 0 0 1.25em 0 hsl(354deg, 100%, 51%), 0 0 1em 0 hsl(354deg, 100%, 51%);
+    -webkit-box-shadow: inset 0 0 1.25em 0 hsl(354deg, 100%, 51%), 0 0 1em 0 hsl(354deg, 100%, 51%);
     -webkit-transition: background-color 5000s ease-in-out 0s;
     transition: background-color 5000s ease-in-out 0s;
+  }
+  .error:hover, .error:focus, .error:-webkit-autofill:focus, .error:-webkit-autofill:hover, .error:-webkit-autofill:hover, .error:-webkit-autofill:focus, .error:-webkit-autofill:-webkit-autofill:focus, .error:-webkit-autofill:-webkit-autofill:hover {
+    box-shadow: inset 0 0 1em 0 hsl(354deg, 100%, 51%), 0 0 3em 0.5em hsl(354deg, 100%, 51%);
+    -webkit-box-shadow: inset 0 0 1em 0 hsl(354deg, 100%, 51%), 0 0 3em 0.5em hsl(354deg, 100%, 51%);
+    opacity: 0.9;
+    text-shadow: none;
   }
   li span {
     font-weight: 900;

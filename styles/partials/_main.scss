@@ -3,6 +3,12 @@
     
 // }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body, h1, h2, h3, h4, p, select, button, li {
     margin: 0;
     color: $p-white;
@@ -27,15 +33,58 @@ button, select{
     font-size: 1.25rem;
     padding: 1rem 1rem;
     background-color: transparent;
-    border: 1px solid $p-white;
-    border-radius: 40px;
+    border: 0.125em solid $p-white;
+    border-radius: $radius;
     &.method {
         font-size: 0.8rem;
         font-family: $body;
         width: 100%;
         font-weight: 900;
     }
+    /* GLOW */
+    position: relative;
+    display: inline-block;
+    color: $neon-p;
+    border-color: $neon-p;
+    box-shadow: 
+        inset 0 0 1.25em 0 $neon-p,
+        0 0 1em 0 $neon-p;
+    &:hover, &:focus {
+        color: $neon-s;
+        text-shadow: none;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0; 
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-shadow: 0 0 2em 0.5em $neon-p;
+        opacity: 0;
+        transition: opacity 100ms linear;
+        background-color: $neon-p;
+        z-index: -1;
+    }
+    &:hover::after,  &:focus::after, &:hover::before, &:focus::before {
+        opacity: 0.90;
+    }
 }
+
+select:hover, select:focus, select:-webkit-autofill:focus, select:-webkit-autofill:hover {
+    cursor: pointer;
+    background-color: transparent;
+    color: $neon-p;
+    box-shadow:  
+        inset 0 0 1em 0 $neon-p,
+        0 0 3em 0.50em $neon-p;
+    -webkit-box-shadow:  
+        inset 0 0 1em 0 $neon-p,
+        0 0 3em 0.50em $neon-p;
+    opacity: 0.90;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 
 i {
     font-size: 150px;
@@ -56,20 +105,26 @@ i {
     }
 }
 
-.error {
-    color: $danger-500;
+.error, .error:-webkit-autofill {
     border-color: $danger-500;
+    color: $danger-500;
     -webkit-text-fill-color: $danger-500;
-    box-shadow: 0 0 0px 1000px $danger-500 inset;
-    -webkit-box-shadow: 0 0 0px 1000px $danger-50 inset;
+    box-shadow: 
+        inset 0 0 1.25em 0 $danger-500,
+        0 0 1em 0 $danger-500;
+    -webkit-box-shadow: 
+        inset 0 0 1.25em 0 $danger-500,
+        0 0 1em 0 $danger-500;
     transition: background-color 5000s ease-in-out 0s;
-    &:-webkit-autofill, &:-webkit-autofill:focus { 
-        border-color: $danger-500;
-        -webkit-text-fill-color: $danger-500;
-        box-shadow: 0 0 0px 1000px $danger-500 inset;
-        -webkit-box-shadow: 0 0 0px 1000px $danger-50 inset;
-        transition: background-color 5000s ease-in-out 0s;
-        
+    &:hover, &:focus, &:-webkit-autofill:focus, &:-webkit-autofill:hover {
+        box-shadow:  
+            inset 0 0 1em 0 $danger-500,
+            0 0 3em 0.50em $danger-500;
+        -webkit-box-shadow:  
+            inset 0 0 1em 0 $danger-500,
+            0 0 3em 0.50em $danger-500;
+        opacity: 0.90;
+        text-shadow: none;
     }
 }
 

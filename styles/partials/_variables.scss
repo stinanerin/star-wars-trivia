@@ -3,12 +3,18 @@ $heading-primary: jedi, serif;
 $body: system-ui;
 
 // Colors
-$p-black: #000;
-$p-white: #fff;
-$accent: #2dc3ec;
+$p-black: hsl(0, 0%, 0%);
+$p-white: hsl(0, 0%, 100%);
+$accent: hsl(193, 83%, 55%);
 
-$danger-500: hsl(354, 62%, 43%);
-$danger-50: hsl(355,70%,91%);
+$danger-500: hsl(354, 100%, 51%);
+
+$neon-p: hsl(317 100% 54%);
+$neon-p: $accent;
+$neon-s: rgb(60, 47, 56);
+
+
+$radius: 0.5em;
 
 // Breakpoints - Bootstrap - mobile first
 $sm: "width >= 576px";
