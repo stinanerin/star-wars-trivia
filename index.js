@@ -9,26 +9,9 @@ const loader = document.querySelector(".loader")
 const h3 = document.createElement("h3");
 const errorDiv = document.createElement("div");
 const restartBtn = document.createElement("button")
-
 let charArr = []
 let duplicateChar;
 
-// -------------------------------------------------------- Set up: API -----------------------------------------------------------
-const API_BASE_URL = "https://swapi.dev/api/"
-
-const getData = async(route, params) => {
-    try {
-        let res = await fetch(`${API_BASE_URL}${route}${params ? params : ""}`)
-        return  await res.json();
-    } catch (error) {
-        compareBtn.classList.add("hidden")
-        main.innerHTML= ""
-        main.classList.add("text-center")
-        h3.innerText = "Something went wrong..";
-        restartBtn.innerText = "Try again"
-        main.append(h3, restartBtn);
-    }
-}
 // -------------------------------------------------------- Character Prototype -----------------------------------------------------------
 class Character {
     constructor(name, gender, height, mass, hairColor, skinColor, eyeColor, movies, homePlanet, vehicles, starships, pictureUrl) {
@@ -49,55 +32,53 @@ class Character {
         let article = document.createElement("article")
         article.classList.add("col-sm-6", "pb-5")
         article.innerHTML += `
-                <div class="profile-card text-center ">
-                    <h3>${(this.name).toLowerCase()}</h3>
-                    <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
-                </div>
-                <section class="col-md ">
-                    <ul class="list-group my-4">
-                        <li class="list-group-item"><span>Hair color: </span>${(this.hairColor)}</li>
-                        <li class="list-group-item"><span>Gender: </span>${(this.gender)}</li>
-                        <li class="list-group-item"><span>Heigth: </span>${(this.height)} cm</li>
-                        <li class="list-group-item"><span>Mass: </span>${(this.mass)} kg</li>
-                        <li class="list-group-item"><span>Skin color: </span>${(this.skinColor)}</li>
-                        <li class="list-group-item"><span>Movies: </span>${(this.movies.length)}</li> 
-                    </ul>
-                    <div class="row g-2">
-                        <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
-                        <div class="col"><button class="h-100 method debut">Movie debut?</button></div>
-                    </div>
-                    <p class="mt-4"><p>
-                </section>
-        `
+        <div class="profile-card text-center ">
+        <h3>${(this.name).toLowerCase()}</h3>
+        <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
+        </div>
+        <section class="col-md ">
+            <ul class="list-group my-4">
+                <li class="list-group-item"><span>Hair color: </span>${(this.hairColor)}</li>
+                <li class="list-group-item"><span>Gender: </span>${(this.gender)}</li>
+                <li class="list-group-item"><span>Height: </span>${(this.height)} cm</li>
+                <li class="list-group-item"><span>Mass: </span>${(this.mass)} kg</li>
+                <li class="list-group-item"><span>Skin color: </span>${(this.skinColor)}</li>
+                <li class="list-group-item"><span>Movies: </span>${(this.movies.length)}</li> 
+            </ul>
+            <div class="row g-2">
+                <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
+                <div class="col"><button class="h-100 method debut">Movie debut?</button></div>
+            </div>
+            <p class="mt-4"><p>
+        </section>`
         charContainer.append(article)
-       
+        
         article.querySelector(".vehicle").addEventListener("click", () => this.compareVehicles(article)) 
         article.querySelector(".debut").addEventListener("click", () => this.filmDebut(article))
     }
     renderComparison() {
         let charTwo = charArr.find(obj => obj != this)
         comparisonWrapper.innerHTML += `
-            <section class="col-md mb-4">
-                <h4 class="text-center">Comparison</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
-                    <li class="list-group-item">${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
-                    <li class="list-group-item">${this.name}´s skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same"} as ${charTwo.name}'s skin color.</li>
-                    <li class="list-group-item">${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
-                    <li class="list-group-item">${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
-                    <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
-                </ul>
-            </section>
-            <section class="container">
-                <h4 class="text-center p-1">Want to find out more?</h4>
-                <div class="row g-2 pt-4">
-                    <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
-                    <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
-                </div>
-                <p class="mt-4"></p>
-            </section>
-        `;
-
+        <section class="col-md mb-4">
+            <h4 class="text-center">Comparison</h4>
+            <ul class="list-group">
+                <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
+                <li class="list-group-item">${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
+                <li class="list-group-item">${this.name}´s skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same"} as ${charTwo.name}'s skin color.</li>
+                <li class="list-group-item">${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
+                <li class="list-group-item">${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
+                <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
+            </ul>
+        </section>
+        <section class="container">
+            <h4 class="text-center p-1">Want to find out more?</h4>
+            <div class="row g-2 pt-4">
+                <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
+                <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
+            </div>
+            <p class="mt-4"></p>
+        </section>`
+        
         comparisonWrapper.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
         comparisonWrapper.querySelector(".home-planets").addEventListener("click", () =>  this.compareHomePlanet(charTwo))  
     }
@@ -108,7 +89,7 @@ class Character {
         } else {
             if (valueOne > valueTwo){
                 if(str === "length") {
-                    string = `, compared to ${charTwo.name}'s measly ${charTwo.movies.length} movie appearances.`
+                    string = `, compared to ${charTwo.name}'s measly ${charTwo.movies.length} movie appearances`
                 } else if (str === "mass") {
                     string = `, which is ${this.mass - charTwo.mass} kg more than ${charTwo.name}, who weighs in on ${charTwo.mass} kg`
                 }else if (str === "height") {
@@ -186,11 +167,27 @@ class Character {
         }
     }
 }
-// -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 
+// -------------------------------------------------------- Set up: API -----------------------------------------------------------
+const API_BASE_URL = "https://swapi.dev/api/"
+
+const getData = async(route, params) => {
+    try {
+        let res = await fetch(`${API_BASE_URL}${route}${params ? params : ""}`)
+        return  await res.json();
+    } catch (error) {
+        main.innerHTML= ""
+        main.classList.add("text-center")
+        h3.innerText = "Something went wrong...";
+        restartBtn.innerText = "Try again"
+        main.append(h3, restartBtn);
+    }
+}
+
+// -------------------------------------------------------- Choose Character - Form Event Listener -----------------------------------------------------------
 charForm.addEventListener("submit", (e) => {
     e.preventDefault()
-
+    
     let charInputArr = [charOneChoice.value, charTwoChoice.value]
     // Prevents user from comparing the same characters
     if(!duplicateChar) {
@@ -209,34 +206,38 @@ charForm.addEventListener("submit", (e) => {
     }
 })
 
+// -------------------------------------------------------- Renders the users choosen characters -----------------------------------------------------------
+let renderCharView = async (arr) => {
+    // Fetches character from API and creates a new instance of the Character prototype - returns arr of pending promises 
+    let response = arr.map((char) => loadCharacters(char))
+    
+    // Resolves response array and assign it to global character array
+    charArr = await Promise.all(response)
+    // Renders charArr
+    charArr.forEach((char) => char.renderCharacter())
+}
+
+// -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
+let loadCharacters = async (charInput) => {
+    
+    route = "people/?"
+    let params = new URLSearchParams({
+        ...(charInput != "" ? { search: charInput } : "")
+    })
+    let charObj = await getData(route, params)
+    
+    // Destructuring the character object fetched from API
+    let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
+    // Creates new Character instance with thee data from the character obj fetched from the API
+    let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
+    return charProto
+}
+
 // -------------------------------------------------------- Initates the rendering of the list comparison between the characters -----------------------------------------------------------
 compareBtn.addEventListener("click", () => {
     event.target.classList.add("hidden")
     charArr[0].renderComparison()
 })
-
-// -------------------------------------------------------- Creates new instance of character prototype-----------------------------------------------------------
-let loadCharacters = async (charInput) => {
-    //todo! error hantering - om karaktären ej finns
-    //todo! dubbelkolla båda om första och andra ej existerar
-    //todo! error hantering - om anv. ej valt två karaktärer - 
-    
-    route = "people/?"
-
-    let params = new URLSearchParams({
-        ...(charInput != "" ? { search: charInput } : "")
-    })
-    
-    let charObj = await getData(route, params)
-
-    //todo! bryt ut denna bit?
-    // Destructuring the character object fetched from API
-    let { name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships } = charObj.results[0];
-    
-    // Creates new Character instance with thee data from the character obj fetched from the API
-    let charProto = new Character(name, gender, height, mass, hair_color, skin_color, eye_color, films, homeworld, vehicles, starships, name)
-    return charProto
-}
 
 // -------------------------------------------------------- Informs user if they have choosen the same character -----------------------------------------------------------
 charForm.addEventListener('change', (e) => {
@@ -255,6 +256,12 @@ charForm.addEventListener('change', (e) => {
     }
 });
 
+// -------------------------------------------------------- Reload page when api-fetch throws error -----------------------------------------------------------
+restartBtn.addEventListener("click", () => {
+    location.reload();
+})
+
+// -------------------------------------------------------- Helper functions -----------------------------------------------------------
 // Returns incoming url:s unique route
 let chopChop =  url => {
     const [first, last] = url.split("api/");
@@ -263,7 +270,6 @@ let chopChop =  url => {
 // Returns array of asynchronously fulfilled objects & an array of the values of passed in obj.key
 let fetchApiUrlArr = async (arr, key) => {
     let resArr = arr.map(elem => getData(chopChop(elem)));
-    //todo! settledAll + lägg in try & catch
     let dataArr = await Promise.all(resArr)
     return [dataArr.map(elem => elem[key]), dataArr]
 }
@@ -279,12 +285,10 @@ let getMaxValue = (arr) => {
         return +max
     }
 }
-
 // Returns the obj from the passed in array which cost_in_credits matches the max-value passed in
 let mostExpVeh = (arr, max) => {
     return arr.find(obj => obj.cost_in_credits == max);
 }
-
 let renderStr = (str, wrapper) => {
     if(wrapper) {
         let p = wrapper.querySelector("p")
@@ -294,7 +298,6 @@ let renderStr = (str, wrapper) => {
         p.innerText = str
     }
 }
-
 // Courtesy of: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma
 let arrayToText = (arr) => {
     if (arr.length <= 2) {
@@ -303,29 +306,6 @@ let arrayToText = (arr) => {
         return arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length-1];
     }
 }
-
-// -------------------------------------------------------- Renders the users choosen characters -----------------------------------------------------------
-let renderCharView = async (arr) => {
-    // Fetches character from API and creates a new instance of the Character prototype - returns arr of pending promises 
-    let response = arr.map((char) => loadCharacters(char))
-
-    try {
-        // Resolves response array and assign it to global character array
-        charArr = await Promise.all(response)
-        // Renders charArr
-        charArr.forEach((char) => char.renderCharacter())
-    }
-    catch (error) {
-        //todo! error?
-        console.log("Error", error);
-    }
-}
-
 let dateToText = (date) => {
     return new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})
 }
-
-// -------------------------------------------------------- Reload page when fetch throws error -----------------------------------------------------------
-restartBtn.addEventListener("click", () => {
-    location.reload();
-})
