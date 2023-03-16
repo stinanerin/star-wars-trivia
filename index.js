@@ -34,7 +34,7 @@ class Character {
         article.innerHTML += `
         <div class="profile-card text-center ">
         <h3>${(this.name).toLowerCase()}</h3>
-        <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
+        <img class="svg" src="assets/images/${this.pictureUrl.toUpperCase().split(' ').join("-")}" alt="Portrait of ${this.name}"/>
         </div>
         <section class="col-md ">
             <ul class="list-group my-4">
