@@ -30,21 +30,23 @@ class Character {
     }
     renderCharacter() {
         let article = document.createElement("article")
-        article.classList.add("col-sm-6", "pb-5")
+        article.classList.add("col-md-6", "pb-5")
         article.innerHTML += `
         <div class="profile-card text-center ">
         <h3>${(this.name).toLowerCase()}</h3>
         <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}.svg" alt="Portrait of ${this.name}"/>
         </div>
-        <section class="col-md ">
-            <ul class="list-group my-4">
-                <li class="list-group-item"><span>Hair color: </span>${(this.hairColor)}</li>
-                <li class="list-group-item"><span>Gender: </span>${(this.gender)}</li>
-                <li class="list-group-item"><span>Height: </span>${(this.height)} cm</li>
-                <li class="list-group-item"><span>Mass: </span>${(this.mass)} kg</li>
-                <li class="list-group-item"><span>Skin color: </span>${(this.skinColor)}</li>
-                <li class="list-group-item"><span>Movies: </span>${(this.movies.length)}</li> 
-            </ul>
+        <section class="col-md">
+            <div class="blob my-5">
+                <ul class=" my-4">
+                    <li ><span>Hair color: </span>${(this.hairColor)}</li>
+                    <li ><span>Gender: </span>${(this.gender)}</li>
+                    <li ><span>Height: </span>${(this.height)} cm</li>
+                    <li ><span>Mass: </span>${(this.mass)} kg</li>
+                    <li ><span>Skin color: </span>${(this.skinColor)}</li>
+                    <li ><span>Movies: </span>${(this.movies.length)}</li>
+                </ul>
+            </div>
             <div class="row g-2">
                 <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
                 <div class="col"><button class="h-100 method debut">Movie debut?</button></div>
@@ -61,16 +63,20 @@ class Character {
     renderComparison() {
         let charTwo = charArr.find(obj => obj != this)
         comparisonWrapper.innerHTML += `
-        <section class="col-md mb-4">
+        <section class="col-md mb-4" >
             <h4 class="text-center">Comparison</h4>
-            <ul class="list-group">
-                <li class="list-group-item">${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
-                <li class="list-group-item">${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
-                <li class="list-group-item">${this.name}´s skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same"} as ${charTwo.name}'s skin color.</li>
-                <li class="list-group-item">${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
-                <li class="list-group-item">${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
-                <li class="list-group-item">${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
-            </ul>
+            <div class="d-flex justify-content-center">
+                <div class="blob large-blob">
+                    <ul>
+                        <li>${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
+                        <li>${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
+                        <li>${this.name}´s skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same"} as ${charTwo.name}'s skin color.</li>
+                        <li>${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
+                        <li>${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
+                        <li>${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
+                    </ul>
+                </div>
+            </div>
         </section>
         <section class="container">
             <h4 class="text-center p-1">Want to find out more?</h4>
