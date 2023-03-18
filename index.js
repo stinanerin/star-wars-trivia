@@ -49,7 +49,9 @@ class Character {
                 <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
                 <div class="col"><button class="h-100 method debut">Movie debut?</button></div>
             </div>
-            <p class="mt-4"><p>
+            <div>
+                <p class="mt-4"><p>
+            </div>
         </section>`
         charContainer.append(article)
         
@@ -76,7 +78,9 @@ class Character {
                 <div class="col"><button class="h-100 method movie-list">Co-starring?</button></div>
                 <div class="col"><button class="h-100 method home-planets">Home planet?</button></div>
             </div>
-            <p class="mt-4"></p>
+            <div>
+                <p class="mt-4"></p>
+            </div>
         </section>`
         
         comparisonWrapper.querySelector(".movie-list").addEventListener("click", () => this.compareFilms(charTwo))
@@ -118,12 +122,12 @@ class Character {
         }
     }
     filmDebut = async (wrapper) => {
-        renderStr(`Loading...`, wrapper)
+        renderStr("Loading...", wrapper)
         let firstMovie = await getData(chopChop(this.movies[0])) 
         renderStr(`${this.name} first graced the movie screen in the film "${firstMovie.title}" released ${dateToText(firstMovie.release_date)}.`, wrapper)
     }
     compareFilms = async (charTwo) => {
-        renderStr(`Loading...`)
+        renderStr("Loading...")
         let movieArr = await fetchApiUrlArr(this.movies, "title")
         let movieArr2 = await fetchApiUrlArr(charTwo.movies, "title")
         let sharedMovies = movieArr[0].filter((movie) => movieArr2[0].includes(movie));
@@ -134,7 +138,7 @@ class Character {
         }
     }
     compareHomePlanet = async (charTwo) => {
-        renderStr(`Loading...`)
+        renderStr("Loading...")
         let homePlanet = await getData(chopChop(this.homePlanet)) 
         let homePlanet2 = await getData(chopChop(charTwo.homePlanet)) 
         if(homePlanet.name === homePlanet2.name) {
@@ -144,7 +148,7 @@ class Character {
         }
     }
     compareVehicles = async(wrapper) => {
-        renderStr(`Loading...`, wrapper)
+        renderStr("Loading...", wrapper)
         // Fetches array of [vehicle prices, vehicle objects]
         let starShipArr = await fetchApiUrlArr(this.starships, "cost_in_credits")
         let vehicleArr = await fetchApiUrlArr(this.vehicles, "cost_in_credits")
@@ -290,12 +294,21 @@ let mostExpVeh = (arr, max) => {
     return arr.find(obj => obj.cost_in_credits == max);
 }
 let renderStr = (str, wrapper) => {
+    
     if(wrapper) {
         let p = wrapper.querySelector("p")
+        p.parentElement.classList.remove("loaderText")
         p.innerText = str
+        if(str == "Loading...") {
+            p.parentElement.classList.add("loaderText")
+        }
     } else {
-        let p = comparisonWrapper.querySelector("p")
-        p.innerText = str
+        let x = comparisonWrapper.querySelector("p")
+        x.parentElement.classList.remove("loaderText")
+        x.innerText = str
+        if(str == "Loading...") {
+            x.parentElement.classList.add("loaderText")
+        }
     }
 }
 // Courtesy of: https://stackoverflow.com/questions/16251822/array-to-comma-separated-string-and-for-last-tag-use-the-and-instead-of-comma

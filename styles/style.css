@@ -5,6 +5,7 @@
 }
 @layer bootstrap, special-styles;
 @layer special-styles {
+  /* SPINNER */
   .loader {
     position: fixed;
     top: 0;
@@ -48,6 +49,64 @@
     }
     to {
       transform: rotate(1turn);
+    }
+  }
+  /* LOADING TEXT */
+  .loaderText {
+    position: relative;
+    width: -webkit-max-content;
+    width: -moz-max-content;
+    width: max-content;
+  }
+  .loaderText::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background-color: hsl(287deg, 89%, 67%);
+    -webkit-animation: flashingCursor 0.8s steps(3) infinite;
+            animation: flashingCursor 0.8s steps(3) infinite;
+  }
+  .loaderText p {
+    position: relative;
+    letter-spacing: 2px;
+    color: hsl(287deg, 89%, 67%);
+    -webkit-animation: typeWriter 8s steps(10) infinite;
+            animation: typeWriter 8s steps(10) infinite;
+    overflow: hidden;
+  }
+  @-webkit-keyframes flashingCursor {
+    0%, 75% {
+      opacity: 1;
+    }
+    76%, 100% {
+      opacity: 0;
+    }
+  }
+  @keyframes flashingCursor {
+    0%, 75% {
+      opacity: 1;
+    }
+    76%, 100% {
+      opacity: 0;
+    }
+  }
+  @-webkit-keyframes typeWriter {
+    0%, 90%, 100% {
+      width: 0;
+    }
+    30%, 60% {
+      width: 90.969px;
+    }
+  }
+  @keyframes typeWriter {
+    0%, 90%, 100% {
+      width: 0;
+    }
+    30%, 60% {
+      width: 90.969px;
     }
   }
   .header {
