@@ -2,6 +2,7 @@
 //     outline: 1px solid pink;  
 // }
 
+
 *,
 *::before,
 *::after {
@@ -84,14 +85,15 @@ select {
             0 0 3em 0.50em $neon-p;
         opacity: 0.90;
         transition: background-color 5000s ease-in-out 0s;
+        -webkit-transition: background-color 5000s ease-in-out 0s;
     }
 }
 
 i {
     font-size: 150px;
-        @media($md){
-            font-size: 250px;
-        }
+    @media($md){
+        font-size: 250px;
+    }
 }
 
 .profile-card {
@@ -137,8 +139,11 @@ li {
 
 .blob {
     text-align: center;
-    border-radius: 45% 55% 52% 48% / 50% 25% 75% 50%;
+    border-radius: 51% 49% 51% 49% / 45% 66% 34% 55% ;
     background-color: $neon-p;
+    -webkit-transition: border-radius 2s;
+    transition: border-radius 2s;
+    max-width: 536px;
     ul {
         padding: 40px;
         list-style-type: none;
@@ -147,14 +152,21 @@ li {
             padding: 0 40px;
         }
     }
+    @media($md) {
+        border-radius: 51% 49% 51% 49% / 45% 36% 64% 55% ;
+    }
     &.large-blob{
+        border-radius: 51% 49% 51% 49% / 45% 36% 64% 55%;
         li {
             @media($xs) {
-                padding: 0 60px;
+                padding: 0 70px;
             }
             @media($lg) {
                 padding: 0 100px;
             }
+        }
+        @media($md) {
+            border-radius: 51% 49% 51% 49% / 45% 36% 64% 55% ;
         }
         @media($lg) {
             max-width: 70%;

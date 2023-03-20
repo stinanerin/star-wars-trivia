@@ -37,15 +37,17 @@ class Character {
         <img class="svg" src="assets/images/${this.pictureUrl.toLowerCase().split(' ').join("-")}.svg" alt="Portrait of ${this.name}"/>
         </div>
         <section class="col-md">
-            <div class="blob my-5">
-                <ul class=" my-4">
-                    <li ><span>Hair color: </span>${(this.hairColor)}</li>
-                    <li ><span>Gender: </span>${(this.gender)}</li>
-                    <li ><span>Height: </span>${(this.height)} cm</li>
-                    <li ><span>Mass: </span>${(this.mass)} kg</li>
-                    <li ><span>Skin color: </span>${(this.skinColor)}</li>
-                    <li ><span>Movies: </span>${(this.movies.length)}</li>
-                </ul>
+            <div class="d-flex justify-content-center">
+                <div class="blob my-5">
+                    <ul class=" my-4">
+                        <li ><span>Hair color: </span>${(this.hairColor)}</li>
+                        <li ><span>Gender: </span>${(this.gender)}</li>
+                        <li ><span>Height: </span>${(this.height)} cm</li>
+                        <li ><span>Mass: </span>${(this.mass)} kg</li>
+                        <li ><span>Skin color: </span>${(this.skinColor)}</li>
+                        <li ><span>Movies: </span>${(this.movies.length)}</li>
+                    </ul>
+                </div>
             </div>
             <div class="row g-2">
                 <div class="col"><button class="h-100 method vehicle">$Vehicle?</button></div>
