@@ -69,13 +69,14 @@ class Character {
             <h4 class="text-center">Comparison</h4>
             <div class="d-flex justify-content-center">
                 <div class="blob large-blob">
-                    <ul>
-                        <li>${this.name} ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "doesn´t have the same"} hair color as ${charTwo.name}.</li>
-                        <li>${this.name} is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "not the same gender"} as ${charTwo.name}.</li>
-                        <li>${this.name}´s skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "not the same"} as ${charTwo.name}'s skin color.</li>
-                        <li>${this.name} is ${(this.height)} cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
-                        <li>${this.name} weighs ${this.mass} kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
-                        <li>${this.name} has appeared in ${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
+                <span></span>
+                    <ul>        
+                        <li><span>${this.name}</span> ${this.compareCharacters(this.hairColor,charTwo.hairColor) ? "has the same" : "<span>doesn´t</span> have the same"} hair color as <span>${charTwo.name}</span>.</li>
+                        <li><span>${this.name}</span> is ${this.compareCharacters(this.gender,charTwo.gender) ? "the same gender" : "<span>not</span> the same gender"} as <span>${charTwo.name}</span>.</li>
+                        <li><span>${this.name}´s</span> skin color is ${this.compareCharacters(this.skinColor,charTwo.skinColor) ? "the same" : "<span>not</span> the same"} as <span>${charTwo.name}'s</span> skin color.</li>
+                        <li><span>${this.name}</span> is <span>${(this.height)}</span> cm tall ${this.compareCharacters(this.height,charTwo.height, charTwo, "height")}.</li>
+                        <li><span>${this.name}</span> weighs <span>${this.mass}</span> kg ${this.compareCharacters(this.mass,charTwo.mass, charTwo, "mass")}.</li>
+                        <li><span>${this.name}</span> has appeared in <span></span>${(this.movies.length)} movies ${this.compareCharacters(this.movies.length,charTwo.movies.length, charTwo, "length")}.</li>
                     </ul>
                 </div>
             </div>
@@ -101,29 +102,29 @@ class Character {
         } else {
             if (valueOne > valueTwo){
                 if(str === "length") {
-                    string = `, compared to ${charTwo.name}'s measly ${charTwo.movies.length} movie appearances`
+                    string = `, compared to <span>${charTwo.name}'s</span> measly <span>${charTwo.movies.length}</span> movie appearances`
                 } else if (str === "mass") {
-                    string = `, which is ${this.mass - charTwo.mass} kg more than ${charTwo.name}, who weighs in on ${charTwo.mass} kg`
+                    string = `, which is <span>${this.mass - charTwo.mass}</span> kg more than <span>${charTwo.name}</span>, who weighs in on <span>${charTwo.mass}</span> kg`
                 }else if (str === "height") {
-                    string = `, and therefore taller than ${charTwo.name}, who is only ${charTwo.height} cm`
+                    string = `, and therefore taller than <span>${charTwo.name}</span>, who is only <span>${charTwo.height}</span> cm`
                 }
                 return string;
             } else if (valueOne < valueTwo) {
                 if(str === "length") {
-                    string = `, and has therefore been in less movies than ${charTwo.name}`
+                    string = `, and has therefore been in <span>less</span> movies than <span>${charTwo.name}</span>`
                 } else if (str === "mass") {
-                    string = `, weighing less than ${charTwo.name}, who weighs ${charTwo.mass - this.mass} kg more`
+                    string = `, weighing <span>less</span> than <span>${charTwo.name}</span>, who weighs <span>${charTwo.mass - this.mass}</span> kg <span>more</span>`
                 }else if (str === "height") {
-                    string = `, practically a gnome compared to ${charTwo.name}'s impressive ${charTwo.height} cm`
+                    string = `, practically a gnome compared to <span>${charTwo.name}'s</span> impressive <span>${charTwo.height}</span> cm`
                 }
                 return string
             } else if (valueOne === valueTwo) {
                 if(str === "length") {
-                    string = `, the same amount as ${charTwo.name}`
+                    string = `, the same amount as <span>${charTwo.name}</span>`
                 } else if (str === "mass") {
-                    string = `, the same as ${charTwo.name}`
+                    string = `, the same as <span>${charTwo.name}</span>`
                 }else if (str === "height") {
-                    string = `, just as ${charTwo.name}`
+                    string = `, just as <span>${charTwo.name}</span>`
                 }
                 return string;
             }
