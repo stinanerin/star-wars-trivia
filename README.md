@@ -2,9 +2,12 @@
 
 An object-oriented project that allows users to compare Star Wars characters and their respective characteristics using the free [SWAPI-API](https://swapi.dev/).
 
+>[View application](https://stormstina.github.io/star-wars-trivia/)
+
 The application also features a loading animation when the characters are first fetched (using Promise.all) and rendered to the DOM, and a different one(Loading...) for when a user clicks one of the action buttons.
 
->[View application](https://stormstina.github.io/star-wars-trivia/)
+![Demonstrating video](assets/images/ezgif.com-video-to-gif.gif)![Demonstrating video](assets/images/ezgif.com-video-to-gif1.gif)
+
 
 ## Summary
 
